@@ -25,6 +25,12 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         text_detector.load_model()
     except Exception as exc:
         logger.warning("Text detector preloading deferred: %s", exc)
+
+    try:
+        from backend.app.ml.image import image_detector
+        image_detector.load_model()
+    except Exception as exc:
+        logger.warning("Image detector preloading deferred: %s", exc)
     yield
 
 

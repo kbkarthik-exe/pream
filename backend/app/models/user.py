@@ -6,6 +6,7 @@ from sqlalchemy import Boolean, DateTime, Integer, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
+    from backend.app.models.image_analysis import ImageAnalysisRecord
     from backend.app.models.report import ForensicReport
     from backend.app.models.session import UserSession
     from backend.app.models.text_analysis import TextAnalysisRecord
@@ -36,4 +37,7 @@ class User(Base):
     )
     text_analyses: Mapped[list["TextAnalysisRecord"]] = relationship(
         "TextAnalysisRecord", back_populates="user", cascade="all, delete-orphan"
+    )
+    image_analyses: Mapped[list["ImageAnalysisRecord"]] = relationship(
+        "ImageAnalysisRecord", back_populates="user", cascade="all, delete-orphan"
     )

@@ -37,6 +37,8 @@ class Settings(BaseSettings):
     RATE_LIMIT_REGISTER_WINDOW: int = 60  # seconds
     RATE_LIMIT_TEXT_MAX: int = 20
     RATE_LIMIT_TEXT_WINDOW: int = 60  # seconds
+    RATE_LIMIT_IMAGE_MAX: int = 15
+    RATE_LIMIT_IMAGE_WINDOW: int = 60  # seconds
 
     # Text Analysis Engine Configuration
     TEXT_MODEL_NAME: str = "roberta-base-openai-detector"
@@ -46,6 +48,15 @@ class Settings(BaseSettings):
     TEXT_MAX_CHARS: int = 15000
     TEXT_AI_THRESHOLD: float = 0.70
     TEXT_HUMAN_THRESHOLD: float = 0.30
+
+    # Image Analysis Engine Configuration
+    IMAGE_MODEL_NAME: str = "umm-maybe/AI-image-detector"
+    IMAGE_MODEL_VERSION: str = "1.0.0"
+    IMAGE_MAX_SIZE_BYTES: int = 15 * 1024 * 1024  # 15 MB
+    IMAGE_MAX_PIXELS: int = 16_000_000  # 16 MP max (protects against decompression bombs)
+    IMAGE_MIN_DIMENSION: int = 32  # Minimum 32x32 pixels
+    IMAGE_AI_THRESHOLD: float = 0.70
+    IMAGE_HUMAN_THRESHOLD: float = 0.30
 
     model_config = SettingsConfigDict(
         env_file=(".env", "backend/.env"),

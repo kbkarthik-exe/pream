@@ -196,29 +196,18 @@ IMAGE/
 ## 5. Automated Verification Results
 
 ### Backend Quality Suite (All Executed and Verified)
-- **Automated Pytest Suite (16 Tests)**:
+- **Automated Pytest Suite (42 Tests)**:
   ```powershell
   $env:PYTHONPATH="."
   .\backend\venv\Scripts\pytest .\backend\tests -v
   ```
   *Result:*
-  * `test_register_success` — **PASSED**
-  * `test_register_duplicate_email` — **PASSED**
-  * `test_register_weak_password_validation` — **PASSED**
-  * `test_register_rate_limiting` — **PASSED**
-  * `test_login_success_and_me` — **PASSED**
-  * `test_login_invalid_credentials` — **PASSED**
-  * `test_logout_invalidates_session` — **PASSED**
-  * `test_expired_session_fails` — **PASSED**
-  * `test_user_cannot_access_another_user_private_report` — **PASSED**
-  * `test_dashboard_stats_unauthorized` — **PASSED**
-  * `test_dashboard_stats_real_counts_zero_baseline` — **PASSED**
-  * `test_dashboard_stats_real_accumulation` — **PASSED**
-  * `test_profile_update` — **PASSED**
-  * `test_reports_filter_by_modality` — **PASSED**
-  * `test_root_endpoint` — **PASSED**
-  * `test_health_endpoint` — **PASSED**
-  * **16 passed in 2.17s (100% Pass Rate)**
+  * Authentication suite: 9 tests — **PASSED**
+  * Dashboard & isolation suite: 5 tests — **PASSED**
+  * Health suite: 2 tests — **PASSED**
+  * Step 4 AI Text detection regression suite: 11 tests — **PASSED**
+  * Step 5 AI Image detection suite: 15 tests — **PASSED**
+  * **42 passed in 45.57s (100% Pass Rate)**
 
 - **Ruff Linter & Formatter**:
   ```powershell
@@ -230,7 +219,7 @@ IMAGE/
   ```powershell
   .\backend\venv\Scripts\mypy --explicit-package-bases backend
   ```
-  *Result:* `Success: no issues found in 39 source files`
+  *Result:* `Success: no issues found in 52 source files`
 
 ### Frontend Quality Suite (All Executed and Verified)
 - **ESLint**:
@@ -254,8 +243,9 @@ IMAGE/
 
 ---
 
-## 6. Documented Limitations & Next Steps (Step 04 Scope)
+## 6. Documented Limitations & Next Steps (Step 05 Completed)
 
-1. **Persistent PostgreSQL Daemon**: The application runs seamlessly against local PostgreSQL via `DATABASE_URL=postgresql+asyncpg://...`, and features automatic SQLite fallback for zero-dependency local test execution.
-2. **AI Model Weights & Training (Step 04)**: As mandated by scientific integrity guidelines, all four modality detection pages display status `BLOCKED` with the banner *"Detection engine not configured yet."* No fake confidence scores or mock predictions are generated. Model implementation begins in subsequent steps.
-3. **Advanced Telemetry Export**: Forensic reports are recorded with metadata and timestamps in PostgreSQL; PDF export and cryptographic watermarking verification can be integrated in future steps.
+1. **Persistent PostgreSQL Daemon**: The application runs seamlessly against local PostgreSQL via `DATABASE_URL=postgresql+asyncpg://...`, with automatic SQLite fallback for zero-dependency local test execution.
+2. **AI Text Forensics Engine (Step 04 Completed)**: Genuine fine-tuned RoBERTa sequence classification transformer (`roberta-base-openai-detector`) paired with burstiness, type-token ratio (TTR), repeated n-grams, and Shannon entropy.
+3. **AI Image Forensics Engine (Step 05 Completed)**: Genuine fine-tuned Swin Vision Transformer (`umm-maybe/AI-image-detector`, CC-BY-4.0) paired with 2D Fast Fourier Transform (FFT) radial octant anisotropy, discrete Laplacian noise residual variance, EXIF/PNG prompt extraction, and C2PA Content Credentials inspection.
+4. **Next Steps (Step 06 & Beyond)**: Video deepfake analysis (temporal coherence, optical flow) and audio voice clone detection (spectrograms, vocoder traces) remain scaffolded for subsequent milestone steps.

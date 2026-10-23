@@ -2,7 +2,13 @@ from backend.app.db.base import Base
 from backend.app.db.session import engine
 
 # Import all models to ensure they are registered with Base.metadata
-from backend.app.models import ForensicReport, TextAnalysisRecord, User, UserSession  # noqa: F401
+from backend.app.models import (  # noqa: F401
+    ForensicReport,
+    ImageAnalysisRecord,
+    TextAnalysisRecord,
+    User,
+    UserSession,
+)
 
 
 async def init_db() -> None:

@@ -255,3 +255,108 @@ export const textApi = {
   },
 };
 
+export interface ImageEvidenceItem {
+  signal: string;
+  metric?: string;
+  finding: string;
+}
+
+export interface ProvenanceInfo {
+  has_exif: boolean;
+  exif_summary: {
+    camera_make?: string | null;
+    camera_model?: string | null;
+    lens_model?: string | null;
+    software?: string | null;
+    create_date?: string | null;
+  };
+  has_ai_metadata: boolean;
+  ai_prompt_snippet?: string | null;
+  has_c2pa: boolean;
+  c2pa_finding: string;
+  provenance_summary: string;
+}
+
+export type ImageClassification =
+  | "LIKELY AI-GENERATED"
+  | "LIKELY HUMAN"
+  | "INCONCLUSIVE";
+
+export interface ImageAnalysisResponse {
+  analysis_id: number;
+  user_id: number;
+  file_hash: string;
+  file_name: string;
+  file_size_bytes: number;
+  image_width: number;
+  image_height: number;
+  image_format: string;
+  model_name: string;
+  model_version: string;
+  status: string;
+  classification: ImageClassification;
+  confidence_score: number | null;
+  ai_probability: number | null;
+  human_probability: number | null;
+  raw_score?: number | null;
+  fft_high_freq_ratio: number;
+  spectral_anisotropy: number;
+  noise_variance: number;
+  has_ai_metadata: boolean;
+  has_c2pa: boolean;
+  provenance?: ProvenanceInfo | null;
+  evidence: ImageEvidenceItem[];
+  limitations: string[];
+  processing_time_ms: number;
+  created_at: string;
+  case_report_id?: number | null;
+}
+
+export interface ImageAnalysisHistoryItem {
+  id: number;
+  file_hash: string;
+  file_name: string;
+  file_size_bytes: number;
+  image_width: number;
+  image_height: number;
+  image_format: string;
+  model_name: string;
+  model_version: string;
+  classification: ImageClassification;
+  confidence_score: number | null;
+  status: string;
+  processing_time_ms: number;
+  created_at: string;
+}
+
+export const imageApi = {
+  async analyze(file: File, saveToCases: boolean = false): Promise<ImageAnalysisResponse> {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("save_to_cases", String(saveToCases));
+
+    const res = await fetch("/api/v1/image/analyze", {
+      method: "POST",
+      body: formData,
+      credentials: "include",
+    });
+    return handleResponse<ImageAnalysisResponse>(res);
+  },
+
+  async listAnalyses(): Promise<ImageAnalysisHistoryItem[]> {
+    const res = await fetch("/api/v1/image/history", {
+      method: "GET",
+      credentials: "include",
+    });
+    return handleResponse<ImageAnalysisHistoryItem[]>(res);
+  },
+
+  async getAnalysis(id: number): Promise<ImageAnalysisResponse> {
+    const res = await fetch(`/api/v1/image/${id}`, {
+      method: "GET",
+      credentials: "include",
+    });
+    return handleResponse<ImageAnalysisResponse>(res);
+  },
+};
+
