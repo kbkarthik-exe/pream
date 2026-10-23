@@ -1,0 +1,44 @@
+# Node & Next.js
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.turbo/
+frontend/tsconfig.tsbuildinfo
+
+# Python
+backend/venv/
+backend/.venv/
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Environment and Secrets
+*.env
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+!*.env.example
+
+# OS and IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Databases & Test Artifacts
+*.db
+*.sqlite3
+*.sqlite
+.playwright-mcp/
+

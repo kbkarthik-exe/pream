@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0B0C10;
+  --foreground: #F8F9FA;
+  --color-brand-black: #0B0C10;
+  --color-surface-dark: #12141A;
+  --color-surface-elevated: #191C24;
+  --color-surface-border: #2B2F3D;
+  --color-gold-primary: #D4AF37;
+  --color-gold-light: #F3E5AB;
+  --color-gold-dark: #997A15;
+  --color-gold-glow: rgba(212, 175, 55, 0.15);
+  --color-text-primary: #F8F9FA;
+  --color-text-secondary: #9FA6B2;
+  --color-text-muted: #6B7280;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+}
+
+/* Subtle forensic grid pattern */
+.forensic-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(212, 175, 55, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(212, 175, 55, 0.04) 1px, transparent 1px);
+}
+
+/* Gold glow accent */
+.gold-glow {
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.15);
+}
+
+.gold-border-glow {
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+}
