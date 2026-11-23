@@ -16,12 +16,11 @@ Adheres strictly to AICF epistemic honesty: zero fabricated metrics, no 100% cer
 and transparent demarcation between neural models and heuristic signal measurements.
 """
 
-from dataclasses import asdict, dataclass
 import logging
+from dataclasses import dataclass
 from typing import Any
 
 import numpy as np
-
 from backend.app.ml.video.face_deepfake import FacialDeepfakeTelemetry
 from backend.app.ml.video.hive_adapter import HiveDetectionResult
 from backend.app.ml.video.temporal import TemporalAnalysisResult

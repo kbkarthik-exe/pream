@@ -1,6 +1,5 @@
 """FastAPI router endpoints for AI Image Forensics."""
 
-import io
 import json
 import logging
 
@@ -34,7 +33,6 @@ from fastapi import (
     UploadFile,
     status,
 )
-from PIL import Image, UnidentifiedImageError
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 

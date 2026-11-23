@@ -7,8 +7,8 @@ Provides:
 4. Robust handling of edge cases: no-face frames, multiple faces, and low-resolution streams.
 """
 
-from dataclasses import dataclass
 import logging
+from dataclasses import dataclass
 
 import cv2
 import numpy as np

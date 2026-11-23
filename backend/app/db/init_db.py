@@ -1,6 +1,5 @@
 from backend.app.db.base import Base
 from backend.app.db.session import engine
-from sqlalchemy import text
 
 # Import all models to ensure they are registered with Base.metadata
 from backend.app.models import (  # noqa: F401
@@ -12,6 +11,7 @@ from backend.app.models import (  # noqa: F401
     UserSession,
     VideoAnalysisRecord,
 )
+from sqlalchemy import text
 
 
 async def init_db() -> None:

@@ -14,18 +14,16 @@ STRICT SECURITY & GOVERNANCE RULES:
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from datetime import UTC, datetime
-import logging
 from typing import Any
 
 from backend.app.core.config import settings
 from backend.app.core.crypto_vault import decrypt_api_key, encrypt_api_key, mask_api_key
-from backend.app.ml.cloud.copyleaks_adapter import CopyleaksAdapter, CopyleaksDetectionResult
-from backend.app.ml.cloud.gptzero_adapter import GPTZeroAdapter, GPTZeroDetectionResult
-from backend.app.ml.cloud.hive_unified import UnifiedHiveAdapter, UnifiedHiveResult
-from backend.app.ml.image.hive_adapter import HiveImageAdapter, HiveImageDetectionResult
-from backend.app.ml.video.hive_adapter import HiveDetectionResult, HiveVideoAdapter
+from backend.app.ml.cloud.copyleaks_adapter import CopyleaksAdapter
+from backend.app.ml.cloud.gptzero_adapter import GPTZeroAdapter
+from backend.app.ml.cloud.hive_unified import UnifiedHiveAdapter
 from backend.app.models.cloud_credential import UserCloudCredential
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession

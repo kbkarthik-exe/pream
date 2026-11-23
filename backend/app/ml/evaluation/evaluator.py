@@ -5,11 +5,11 @@ recording per-sample predictions, execution time, hardware environment, and full
 statistical metrics with zero hallucination.
 """
 
-from datetime import UTC, datetime
 import json
 import logging
-from pathlib import Path
 import time
+from datetime import UTC, datetime
+from pathlib import Path
 from typing import Any
 
 from backend.app.ml.evaluation.datasets import (
@@ -343,7 +343,7 @@ def _load_cache_from_disk() -> dict[str, Any]:
     """Load benchmark cache from disk if available."""
     if BENCHMARK_CACHE_FILE.exists():
         try:
-            with open(BENCHMARK_CACHE_FILE, "r", encoding="utf-8") as f:
+            with open(BENCHMARK_CACHE_FILE, encoding="utf-8") as f:
                 data = json.load(f)
                 if isinstance(data, dict):
                     return data

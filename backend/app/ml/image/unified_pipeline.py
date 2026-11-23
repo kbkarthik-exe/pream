@@ -18,21 +18,13 @@ Strict Architectural Invariants:
 
 from __future__ import annotations
 
+import hashlib
 import io
 import time
-import hashlib
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
-from PIL import Image
-
 from backend.app.ml.image.detector import ImageForensicsDetector, image_detector
-from backend.app.ml.image.generator_attribution import (
-    EvidenceTier,
-    GeneratorAttributionResult,
-    GeneratorOutcome,
-    attribute_generator,
-)
 from backend.app.ml.image.forensics.evidence_fusion import run_forensic_investigation
 from backend.app.ml.image.forensics.schemas import ConfidenceType, ManipulationVerdict
 from backend.app.ml.image.forensics.security_hardening import (
@@ -42,6 +34,12 @@ from backend.app.ml.image.forensics.security_hardening import (
     ImageSecurityException,
     validate_image_security,
 )
+from backend.app.ml.image.generator_attribution import (
+    EvidenceTier,
+    GeneratorOutcome,
+    attribute_generator,
+)
+from PIL import Image
 
 
 @dataclass

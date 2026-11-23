@@ -9,19 +9,18 @@ Provides:
 4. Timestamp-based facial manipulation evidence tracking.
 """
 
-from dataclasses import dataclass
 import logging
-import os
+from dataclasses import dataclass
 from pathlib import Path
-import time
 from typing import Any
 
 import numpy as np
-from PIL import Image
 import torch
 import torch.nn as nn
-
 from backend.app.ml.video.face_detector import DetectedFace, face_detector
+from PIL import Image
+
+TORCH_AVAILABLE = True
 
 logger = logging.getLogger("aicf.ml.video.face_deepfake")
 
@@ -147,6 +146,12 @@ class FacialDeepfakeDetector:
 
         Never downloads from external network silently.
         """
+        if not TORCH_AVAILABLE:
+            self._is_loaded = False
+            self._load_error = "PyTorch is not installed in the environment."
+            logger.info("Facial deepfake model status: UNAVAILABLE (%s)", self._load_error)
+            return False
+
         target_path = Path(custom_weights_path) if custom_weights_path else self.weights_path
 
         if not target_path.exists():
@@ -205,7 +210,6 @@ class FacialDeepfakeDetector:
         sampled_frames: list[Any],  # list of SampledFrame from frames.py
     ) -> FacialDeepfakeTelemetry:
         """Executes full face detection, alignment, inference, and boundary telemetry across sampled frames."""
-        t0 = time.time()
         timeline: list[FacialFrameRecord] = []
         all_face_scores: list[float] = []
         all_seam_deltas: list[float] = []
@@ -369,7 +373,6 @@ class FacialDeepfakeDetector:
         scores = [r.face_manipulation_score for r in cluster if r.face_manipulation_score is not None]
         seams = [r.boundary_seam_delta for r in cluster if r.boundary_seam_delta is not None]
 
-        mean_s = round(float(np.mean(scores)), 4) if scores else None
         max_s = round(float(np.max(scores)), 4) if scores else None
         max_seam = round(float(np.max(seams)), 4) if seams else 0.0
 

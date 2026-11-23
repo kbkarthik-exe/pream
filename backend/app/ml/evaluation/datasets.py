@@ -51,7 +51,7 @@ def load_text_benchmark(dataset_path: str | Path | None = None) -> list[TextSamp
     if not path.exists():
         raise FileNotFoundError(f"Text benchmark dataset not found at '{path}'.")
 
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         data = json.load(f)
 
     samples: list[TextSample] = []

@@ -1,11 +1,10 @@
 """Secure video ingestion, validation, and uniform temporal frame extraction."""
 
-from dataclasses import dataclass
 import hashlib
 import logging
-import os
-from pathlib import Path
 import tempfile
+from dataclasses import dataclass
+from pathlib import Path
 from typing import BinaryIO
 
 import cv2

@@ -20,7 +20,6 @@ if hasattr(Image, "MAX_IMAGE_PIXELS"):
 
 class ImageSecurityException(ValueError):
     """Raised when an image payload violates security or resource constraints."""
-    pass
 
 
 def sniff_image_dimensions_pre_decode(raw_bytes: bytes) -> tuple[int, int, str] | None:

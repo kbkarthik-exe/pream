@@ -6,12 +6,11 @@ optical displacement, and high-frequency temporal flicker. They are NOT trained 
 representations and must NEVER be presented as standalone neural predictions.
 """
 
-from dataclasses import dataclass, field
 import logging
+from dataclasses import dataclass
 
 import cv2
 import numpy as np
-
 from backend.app.ml.video.frames import SampledFrame
 
 logger = logging.getLogger("aicf.ml.video.temporal")

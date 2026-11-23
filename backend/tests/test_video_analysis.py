@@ -16,19 +16,28 @@ Covers:
 13. Temporary-file cleanup verification.
 """
 
-from glob import glob
 import os
-from pathlib import Path
 import tempfile
+from glob import glob
+from pathlib import Path
 from unittest.mock import AsyncMock, patch
 
 import cv2
 import numpy as np
 import pytest
+import torch
 from backend.app.core.config import settings
+from backend.app.ml.video.ensemble import video_ensemble
+from backend.app.ml.video.face_deepfake import (
+    FacialDeepfakeDetector,
+    Meso4,
+)
+from backend.app.ml.video.face_detector import FaceDetectorAndAligner
+from backend.app.ml.video.temporal import TemporalAnalysisResult
 from backend.app.models.video import VideoAnalysisRecord
 from backend.app.services.pdf_generator import generate_video_analysis_pdf
 from httpx import AsyncClient
+from PIL import Image
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -484,18 +493,6 @@ async def test_api_download_video_pdf_generator_failure(client: AsyncClient):
 # AICF PHASE 3 — ADVANCED FACIAL DEEPFAKE & CONSENSUS TESTS
 # ==============================================================================
 
-from PIL import Image
-import torch
-from backend.app.ml.video.face_detector import face_detector, FaceDetectorAndAligner
-from backend.app.ml.video.face_deepfake import (
-    facial_deepfake_detector,
-    FacialDeepfakeDetector,
-    Meso4,
-)
-from backend.app.ml.video.ensemble import video_ensemble, VideoConsensusBreakdown
-from backend.app.ml.video.temporal import compute_temporal_consistency, TemporalAnalysisResult
-from backend.app.ml.video.frames import SampledFrame
-
 
 def create_in_memory_mp4_with_faces(
     num_frames: int = 12,
@@ -668,7 +665,6 @@ async def test_video_analysis_low_resolution_stream(client: AsyncClient):
 def test_video_consensus_aggregator_verdicts():
     """Verifies that the consensus aggregator outputs the 3 mandated verdicts under distinct conditions."""
     from backend.app.ml.video.face_deepfake import FacialDeepfakeTelemetry
-    from backend.app.ml.video.temporal import TemporalAnalysisResult
 
     dummy_temporal = TemporalAnalysisResult(
         mean_frame_difference=0.04,

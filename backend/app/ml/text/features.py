@@ -73,6 +73,7 @@ def extract_linguistic_features(text: str) -> dict[str, Any]:
             "sentence_length_distribution": {
                 "min": 0,
                 "max": 0,
+                "mean": 0.0,
                 "std": 0.0,
                 "median": 0.0,
             },
@@ -129,19 +130,31 @@ def extract_linguistic_features(text: str) -> dict[str, Any]:
         if has_trans:
             transitional_start_count += 1
 
-        rel_burst = (
+        cadence_ratio = (
             round(s_wc / avg_sentence_length, 2) if avg_sentence_length > 0 else 1.0
         )
+        if cadence_ratio < 0.70:
+            cadence_label = "SHORT"
+        elif cadence_ratio > 1.35:
+            cadence_label = "LONG"
+        else:
+            cadence_label = "BALANCED"
+
         punct_count = len(re.findall(r"[,;:\-—?!'\"()]", s))
 
         sentence_details.append({
             "sentence_index": idx,
+            "sentence_idx": idx - 1,
             "text": s[:150] + ("..." if len(s) > 150 else ""),
             "word_count": s_wc,
             "character_count": len(s),
-            "relative_cadence": rel_burst,
+            "char_count": len(s),
+            "relative_cadence": cadence_label,
+            "cadence_ratio": cadence_ratio,
             "punctuation_count": punct_count,
+            "punct_count": punct_count,
             "has_transitional_marker": has_trans,
+            "has_transitional_opening": has_trans,
         })
 
     transitional_starts_ratio = (
@@ -166,10 +179,12 @@ def extract_linguistic_features(text: str) -> dict[str, Any]:
         p_ttr = round(len(set(p_words)) / p_wc, 4) if p_wc > 0 else 0.0
         paragraph_details.append({
             "paragraph_index": p_idx,
+            "paragraph_idx": p_idx - 1,
             "text_snippet": p[:100] + ("..." if len(p) > 100 else ""),
             "word_count": p_wc,
             "sentence_count": p_sc,
             "avg_sentence_length": p_avg_sl,
+            "avg_sentence_len": p_avg_sl,
             "type_token_ratio": p_ttr,
         })
 
@@ -267,6 +282,7 @@ def extract_linguistic_features(text: str) -> dict[str, Any]:
         "sentence_length_distribution": {
             "min": min(sentence_lengths),
             "max": max(sentence_lengths),
+            "mean": round(avg_sentence_length, 2),
             "std": round(std_dev, 2),
             "median": round(median_sl, 2),
         },

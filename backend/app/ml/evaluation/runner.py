@@ -10,7 +10,6 @@ import argparse
 import json
 import logging
 from pathlib import Path
-import sys
 
 from backend.app.ml.evaluation.evaluator import (
     evaluate_image_model,

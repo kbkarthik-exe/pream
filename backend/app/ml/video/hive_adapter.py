@@ -10,12 +10,12 @@ CRITICAL SECURITY & GOVERNANCE RULES:
 - Third-party Hive results are kept strictly isolated from local model telemetry.
 """
 
-from dataclasses import dataclass
 import logging
+from dataclasses import dataclass
 from typing import Any
 
-from backend.app.core.config import settings
 import httpx
+from backend.app.core.config import settings
 
 logger = logging.getLogger("aicf.ml.video.hive")
 

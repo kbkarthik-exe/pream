@@ -1,9 +1,9 @@
 """FastAPI router endpoints for AI Video Forensics."""
 
-from dataclasses import asdict
 import io
 import json
 import logging
+from dataclasses import asdict
 from pathlib import Path
 
 from backend.app.api.deps import get_current_user

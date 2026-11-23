@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 from PIL import Image
 
 from .frequency_forensics import analyze_frequency_domain
@@ -17,7 +15,6 @@ from .schemas import (
     ManipulationVerdict,
     Reliability,
     Severity,
-    SuspiciousRegion,
 )
 from .security_hardening import validate_image_security
 

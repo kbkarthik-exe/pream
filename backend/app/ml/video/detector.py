@@ -11,11 +11,12 @@ Inherits from BaseDetector, providing:
 8. Strict AICF epistemic honesty rules: transparent classification boundaries and zero fabricated metrics.
 """
 
-from dataclasses import asdict, dataclass
 import logging
 import time
+from dataclasses import asdict, dataclass
 from typing import Any
 
+import numpy as np
 from backend.app.core.config import settings
 from backend.app.ml.base import BaseDetector
 from backend.app.ml.image import image_detector
@@ -28,10 +29,9 @@ from backend.app.ml.video.face_deepfake import (
     FacialDeepfakeTelemetry,
     facial_deepfake_detector,
 )
-from backend.app.ml.video.frames import SampledFrame, VideoInspectionResult
+from backend.app.ml.video.frames import VideoInspectionResult
 from backend.app.ml.video.hive_adapter import HiveDetectionResult, hive_adapter
 from backend.app.ml.video.temporal import TemporalAnalysisResult, compute_temporal_consistency
-import numpy as np
 
 logger = logging.getLogger("aicf.ml.video.detector")
 

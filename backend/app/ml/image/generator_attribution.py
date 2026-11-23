@@ -169,7 +169,7 @@ def attribute_generator(
 
     try:
         width, height = image.size
-        img_format = (image.format or "UNKNOWN").upper()
+        _img_format = (image.format or "UNKNOWN").upper()
     except Exception:
         return GeneratorAttributionResult(
             primary_generator=GeneratorOutcome.INSUFFICIENT_EVIDENCE.value,

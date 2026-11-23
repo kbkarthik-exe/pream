@@ -18,7 +18,7 @@ from backend.app.core.config import settings
 def _derive_user_key(user_id: int) -> bytes:
     """Derives a user-specific encryption key from application secret and user context."""
     master = settings.SECRET_KEY.encode("utf-8")
-    salt = f"aicf_cloud_vault_v1_user_{user_id}".encode("utf-8")
+    salt = f"aicf_cloud_vault_v1_user_{user_id}".encode()
     return hashlib.pbkdf2_hmac("sha256", master, salt, iterations=100_000, dklen=32)
 
 

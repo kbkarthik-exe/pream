@@ -3,8 +3,6 @@
 import logging
 from typing import Any, Literal
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
-
 from backend.app.api.deps import get_current_user
 from backend.app.ml.evaluation.evaluator import (
     evaluate_image_model,
@@ -14,6 +12,7 @@ from backend.app.ml.evaluation.evaluator import (
     get_video_evaluation_status,
 )
 from backend.app.models.user import User
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 
 logger = logging.getLogger("aicf.api.evaluation")
 
