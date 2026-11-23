@@ -15,3 +15,6 @@ ruff>=0.6.0
 mypy>=1.11.0
 pillow>=11.0.0
 python-multipart>=0.0.12
+reportlab>=5.1.0
+types-reportlab>=5.0.0
+opencv-python-headless>=4.10.0

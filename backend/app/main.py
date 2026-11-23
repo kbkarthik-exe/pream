@@ -60,7 +60,7 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
 
 
 @app.get("/", tags=["Root"])
-async def root():
+async def root() -> dict[str, str]:
     return {
         "platform": settings.PROJECT_NAME,
         "tagline": settings.TAGLINE,

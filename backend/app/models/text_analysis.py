@@ -40,6 +40,7 @@ class TextAnalysisRecord(Base):
 
     evidence_json: Mapped[str] = mapped_column(Text, nullable=False)
     limitations_text: Mapped[str] = mapped_column(Text, nullable=False)
+    ensemble_json: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     status: Mapped[str] = mapped_column(String(32), default="SUCCESS", nullable=False)
     processing_time_ms: Mapped[float] = mapped_column(Float, nullable=False)

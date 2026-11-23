@@ -5,6 +5,17 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
+import {
+  ShieldCheck,
+  UserPlus,
+  User,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  AlertTriangle,
+  ArrowRight,
+} from "lucide-react";
 
 export default function RegisterPage() {
   const { user, register, isLoading: authLoading } = useAuth();
@@ -15,6 +26,8 @@ export default function RegisterPage() {
   const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -45,7 +58,7 @@ export default function RegisterPage() {
     }
 
     if (!/^[a-zA-Z0-9_]{3,30}$/.test(username)) {
-      setError("Username must be 3-30 characters and only contain letters, numbers, or underscores.");
+      setError("Callsign must be 3-30 characters and only contain letters, numbers, or underscores.");
       return;
     }
 
@@ -82,17 +95,17 @@ export default function RegisterPage() {
   return (
     <main className="flex min-h-[calc(100vh-140px)] items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
-        <div className="rounded-2xl border border-[#2B2F3D] bg-[#12141A]/95 p-8 shadow-[0_0_40px_rgba(0,0,0,0.85)] backdrop-blur-md">
+        <div className="rounded-3xl border border-[#292D35] bg-[#12151B] p-8 shadow-[0_0_50px_rgba(0,0,0,0.85)] backdrop-blur-md">
           {/* Header */}
           <div className="text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl border border-[#D4AF37]/50 bg-[#191C24] shadow-[0_0_15px_rgba(212,175,55,0.2)]">
-              <span className="font-mono text-xl font-bold text-[#D4AF37]">Ψ</span>
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#D6B15E]/40 bg-[#181C23] shadow-[0_0_20px_rgba(214,177,94,0.15)]">
+              <ShieldCheck className="h-7 w-7 text-[#D6B15E]" />
             </div>
-            <h1 className="mt-4 text-2xl font-bold tracking-tight text-white">
+            <h1 className="mt-4 text-2xl font-bold tracking-tight text-[#F5F5F2]">
               Analyst Registration
             </h1>
-            <p className="mt-1.5 text-xs text-[#9FA6B2]">
-              Provision a verified analyst identity with cryptographic session credentials
+            <p className="mt-1.5 text-xs text-[#A3A7B0]">
+              Provision an authenticated investigator account with cryptographic session tokens
             </p>
           </div>
 
@@ -100,35 +113,37 @@ export default function RegisterPage() {
           {error && (
             <div
               role="alert"
-              className="mt-6 rounded-lg border border-red-500/40 bg-red-500/10 p-3.5 text-xs text-red-300"
+              className="mt-6 rounded-xl border border-red-500/40 bg-red-500/10 p-3.5 text-xs text-red-300 flex items-center gap-2"
             >
-              <div className="flex items-center gap-2">
-                <span className="font-mono font-bold text-red-400">ERROR:</span>
+              <AlertTriangle className="h-4 w-4 shrink-0 text-red-400" />
+              <div>
+                <span className="font-mono font-bold text-red-400 mr-1">REGISTRATION FAILED:</span>
                 <span>{error}</span>
               </div>
             </div>
           )}
 
-          {/* Registration Form */}
+          {/* Form */}
           <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor="email"
-                className="block font-mono text-xs font-medium text-[#F3E5AB]"
+                className="block font-mono text-xs font-medium text-[#A3A7B0] uppercase"
               >
-                Analyst Email
+                Institutional Email *
               </label>
-              <div className="mt-1.5">
+              <div className="relative mt-1.5">
+                <Mail className="absolute left-3.5 top-2.5 h-4 w-4 text-[#737984]" />
                 <input
                   id="email"
                   name="email"
                   type="email"
-                  required
                   autoComplete="email"
+                  required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="analyst@forensics.aicf.internal"
-                  className="block w-full rounded-lg border border-[#2B2F3D] bg-[#191C24] px-3.5 py-2.5 text-sm text-[#F8F9FA] placeholder-[#4B5563] shadow-inner focus:border-[#D4AF37] focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                  placeholder="analyst@agency.gov or user@domain.com"
+                  className="w-full rounded-xl border border-[#292D35] bg-[#090A0D] pl-10 pr-4 py-2.5 text-xs text-[#F5F5F2] placeholder-[#737984] focus:border-[#D6B15E] focus:outline-hidden font-mono"
                 />
               </div>
             </div>
@@ -136,21 +151,22 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="username"
-                className="block font-mono text-xs font-medium text-[#F3E5AB]"
+                className="block font-mono text-xs font-medium text-[#A3A7B0] uppercase"
               >
-                Analyst Callsign (Username)
+                Analyst Callsign / Username *
               </label>
-              <div className="mt-1.5">
+              <div className="relative mt-1.5">
+                <User className="absolute left-3.5 top-2.5 h-4 w-4 text-[#737984]" />
                 <input
                   id="username"
                   name="username"
                   type="text"
-                  required
                   autoComplete="username"
+                  required
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder="analyst_callsign"
-                  className="block w-full rounded-lg border border-[#2B2F3D] bg-[#191C24] px-3.5 py-2.5 text-sm text-[#F8F9FA] placeholder-[#4B5563] shadow-inner focus:border-[#D4AF37] focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                  placeholder="e.g. investigator_jensen"
+                  className="w-full rounded-xl border border-[#292D35] bg-[#090A0D] pl-10 pr-4 py-2.5 text-xs text-[#F5F5F2] placeholder-[#737984] focus:border-[#D6B15E] focus:outline-hidden font-mono"
                 />
               </div>
             </div>
@@ -158,110 +174,138 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="fullName"
-                className="block font-mono text-xs font-medium text-[#9FA6B2]"
+                className="block font-mono text-xs font-medium text-[#A3A7B0] uppercase"
               >
-                Full Name <span className="text-[10px] text-[#6B7280]">(Optional)</span>
+                Full Name (Optional)
               </label>
-              <div className="mt-1.5">
-                <input
-                  id="fullName"
-                  name="fullName"
-                  type="text"
-                  autoComplete="name"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Dr. Jordan Mercer"
-                  className="block w-full rounded-lg border border-[#2B2F3D] bg-[#191C24] px-3.5 py-2.5 text-sm text-[#F8F9FA] placeholder-[#4B5563] shadow-inner focus:border-[#D4AF37] focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
-                />
-              </div>
+              <input
+                id="fullName"
+                name="fullName"
+                type="text"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder="Agent Adam Jensen"
+                className="mt-1.5 w-full rounded-xl border border-[#292D35] bg-[#090A0D] px-3.5 py-2.5 text-xs text-[#F5F5F2] placeholder-[#737984] focus:border-[#D6B15E] focus:outline-hidden font-mono"
+              />
             </div>
 
             <div>
               <label
                 htmlFor="password"
-                className="block font-mono text-xs font-medium text-[#F3E5AB]"
+                className="block font-mono text-xs font-medium text-[#A3A7B0] uppercase"
               >
-                Master Password (Argon2id Protected)
+                Secure Password *
               </label>
-              <div className="mt-1.5">
+              <div className="relative mt-1.5">
+                <Lock className="absolute left-3.5 top-2.5 h-4 w-4 text-[#737984]" />
                 <input
                   id="password"
                   name="password"
-                  type="password"
-                  required
+                  type={showPassword ? "text" : "password"}
                   autoComplete="new-password"
+                  required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••••••"
-                  className="block w-full rounded-lg border border-[#2B2F3D] bg-[#191C24] px-3.5 py-2.5 text-sm text-[#F8F9FA] placeholder-[#4B5563] shadow-inner focus:border-[#D4AF37] focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                  placeholder="••••••••••••"
+                  className="w-full rounded-xl border border-[#292D35] bg-[#090A0D] pl-10 pr-10 py-2.5 text-xs text-[#F5F5F2] placeholder-[#737984] focus:border-[#D6B15E] focus:outline-hidden font-mono"
                 />
-              </div>
-
-              {/* Password complexity checklist */}
-              <div className="mt-2.5 grid grid-cols-2 gap-1.5 text-[11px]">
-                <div className={`flex items-center gap-1.5 ${hasMinLength ? "text-emerald-400" : "text-[#6B7280]"}`}>
-                  <span>{hasMinLength ? "✓" : "○"}</span> 8+ Characters
-                </div>
-                <div className={`flex items-center gap-1.5 ${hasUpperCase ? "text-emerald-400" : "text-[#6B7280]"}`}>
-                  <span>{hasUpperCase ? "✓" : "○"}</span> Uppercase (A-Z)
-                </div>
-                <div className={`flex items-center gap-1.5 ${hasLowerCase ? "text-emerald-400" : "text-[#6B7280]"}`}>
-                  <span>{hasLowerCase ? "✓" : "○"}</span> Lowercase (a-z)
-                </div>
-                <div className={`flex items-center gap-1.5 ${hasSpecialOrDigit ? "text-emerald-400" : "text-[#6B7280]"}`}>
-                  <span>{hasSpecialOrDigit ? "✓" : "○"}</span> Number/Symbol
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-2.5 text-[#737984] hover:text-[#F5F5F2] transition-colors cursor-pointer"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
               </div>
             </div>
+
+            {/* Live Password Criteria Meter */}
+            {password.length > 0 && (
+              <div className="rounded-xl border border-[#292D35] bg-[#181C23] p-3 text-[11px] font-mono space-y-1.5">
+                <div className="text-[#A3A7B0] font-bold text-[10px] uppercase">Forensic Complexity Criteria:</div>
+                <div className="grid grid-cols-2 gap-1.5 text-[10px]">
+                  <span className={hasMinLength ? "text-emerald-400 flex items-center gap-1" : "text-[#737984] flex items-center gap-1"}>
+                    {hasMinLength ? "✓" : "○"} 8+ Characters
+                  </span>
+                  <span className={hasUpperCase ? "text-emerald-400 flex items-center gap-1" : "text-[#737984] flex items-center gap-1"}>
+                    {hasUpperCase ? "✓" : "○"} Uppercase (A-Z)
+                  </span>
+                  <span className={hasLowerCase ? "text-emerald-400 flex items-center gap-1" : "text-[#737984] flex items-center gap-1"}>
+                    {hasLowerCase ? "✓" : "○"} Lowercase (a-z)
+                  </span>
+                  <span className={hasSpecialOrDigit ? "text-emerald-400 flex items-center gap-1" : "text-[#737984] flex items-center gap-1"}>
+                    {hasSpecialOrDigit ? "✓" : "○"} Number / Symbol
+                  </span>
+                </div>
+              </div>
+            )}
 
             <div>
               <label
                 htmlFor="confirmPassword"
-                className="block font-mono text-xs font-medium text-[#F3E5AB]"
+                className="block font-mono text-xs font-medium text-[#A3A7B0] uppercase"
               >
-                Confirm Password
+                Confirm Password *
               </label>
-              <div className="mt-1.5">
+              <div className="relative mt-1.5">
+                <Lock className="absolute left-3.5 top-2.5 h-4 w-4 text-[#737984]" />
                 <input
                   id="confirmPassword"
                   name="confirmPassword"
-                  type="password"
-                  required
+                  type={showConfirmPassword ? "text" : "password"}
                   autoComplete="new-password"
+                  required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="••••••••••••••••"
-                  className={`block w-full rounded-lg border bg-[#191C24] px-3.5 py-2.5 text-sm text-[#F8F9FA] placeholder-[#4B5563] shadow-inner focus:outline-none ${
-                    confirmPassword && !passwordsMatch
-                      ? "border-red-500 focus:border-red-500"
-                      : "border-[#2B2F3D] focus:border-[#D4AF37]"
-                  }`}
+                  placeholder="••••••••••••"
+                  className="w-full rounded-xl border border-[#292D35] bg-[#090A0D] pl-10 pr-10 py-2.5 text-xs text-[#F5F5F2] placeholder-[#737984] focus:border-[#D6B15E] focus:outline-hidden font-mono"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3.5 top-2.5 text-[#737984] hover:text-[#F5F5F2] transition-colors cursor-pointer"
+                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                >
+                  {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
               </div>
+              {confirmPassword.length > 0 && !passwordsMatch && (
+                <p className="mt-1 text-[10px] text-red-400 font-mono">Passwords do not match.</p>
+              )}
             </div>
 
             <div className="pt-2">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full rounded-lg border border-[#D4AF37]/50 bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB] px-4 py-2.5 text-center text-sm font-semibold text-black shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#D6B15E]/50 bg-gradient-to-r from-[#D6B15E] to-[#F0D58A] py-2.5 font-mono text-xs font-bold text-[#090A0D] shadow-[0_0_15px_rgba(214,177,94,0.2)] hover:opacity-95 disabled:opacity-50 transition-all cursor-pointer"
               >
-                {isSubmitting ? "Provisioning Identity..." : "Complete Registration"}
+                {isSubmitting ? (
+                  <>
+                    <span className="h-3 w-3 animate-spin rounded-full border-2 border-black border-t-transparent" />
+                    <span>Provisioning Identity...</span>
+                  </>
+                ) : (
+                  <>
+                    <UserPlus className="h-4 w-4" />
+                    <span>Create Forensic Credentials</span>
+                  </>
+                )}
               </button>
             </div>
           </form>
 
-          {/* Footer Link */}
-          <div className="mt-6 border-t border-[#2B2F3D]/80 pt-4 text-center">
-            <p className="text-xs text-[#9FA6B2]">
-              Already hold an analyst identity?{" "}
-              <Link
-                href="/login"
-                className="font-medium text-[#D4AF37] underline underline-offset-4 hover:text-[#F3E5AB]"
-              >
-                Sign in to Console
-              </Link>
-            </p>
+          {/* Footer Navigation */}
+          <div className="mt-6 border-t border-[#292D35] pt-4 text-center text-xs text-[#A3A7B0]">
+            Already have an active analyst account?{" "}
+            <Link
+              href="/login"
+              className="font-medium text-[#D6B15E] hover:text-[#F0D58A] transition-colors inline-flex items-center gap-1"
+            >
+              <span>Sign in to console</span>
+              <ArrowRight className="h-3 w-3" />
+            </Link>
           </div>
         </div>
       </div>

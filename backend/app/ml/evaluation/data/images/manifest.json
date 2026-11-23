@@ -1,0 +1,12 @@
+{
+  "benchmark_name": "AICF Image Authenticity Benchmark (v1.0)",
+  "version": "1.0.0",
+  "license": "CC0 / Public Domain",
+  "total_samples": 20,
+  "classes": {
+    "authentic": 10,
+    "synthetic": 10
+  },
+  "dimensions": "256x256",
+  "format": "JPEG (Quality 92)"
+}

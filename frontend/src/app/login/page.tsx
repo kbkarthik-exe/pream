@@ -5,6 +5,16 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
+import {
+  ShieldCheck,
+  LogIn,
+  Eye,
+  EyeOff,
+  AlertTriangle,
+  ArrowRight,
+  Lock,
+  User,
+} from "lucide-react";
 
 export default function LoginPage() {
   const { user, login, isLoading: authLoading } = useAuth();
@@ -12,6 +22,7 @@ export default function LoginPage() {
 
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -57,17 +68,17 @@ export default function LoginPage() {
   return (
     <main className="flex min-h-[calc(100vh-140px)] items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
-        <div className="rounded-2xl border border-[#2B2F3D] bg-[#12141A]/95 p-8 shadow-[0_0_40px_rgba(0,0,0,0.85)] backdrop-blur-md">
+        <div className="rounded-3xl border border-[#292D35] bg-[#12151B] p-8 shadow-[0_0_50px_rgba(0,0,0,0.85)] backdrop-blur-md">
           {/* Header */}
           <div className="text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl border border-[#D4AF37]/50 bg-[#191C24] shadow-[0_0_15px_rgba(212,175,55,0.2)]">
-              <span className="font-mono text-xl font-bold text-[#D4AF37]">Ψ</span>
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#D6B15E]/40 bg-[#181C23] shadow-[0_0_20px_rgba(214,177,94,0.15)]">
+              <ShieldCheck className="h-7 w-7 text-[#D6B15E]" />
             </div>
-            <h1 className="mt-4 text-2xl font-bold tracking-tight text-white">
-              Forensic Console Access
+            <h1 className="mt-4 text-2xl font-bold tracking-tight text-[#F5F5F2]">
+              Analyst Portal Access
             </h1>
-            <p className="mt-1.5 text-xs text-[#9FA6B2]">
-              Authenticate with your institutional credentials to establish a secure session
+            <p className="mt-1.5 text-xs text-[#A3A7B0]">
+              Enter your institutional credentials to establish an authenticated session
             </p>
           </div>
 
@@ -75,10 +86,11 @@ export default function LoginPage() {
           {error && (
             <div
               role="alert"
-              className="mt-6 rounded-lg border border-red-500/40 bg-red-500/10 p-3.5 text-xs text-red-300"
+              className="mt-6 rounded-xl border border-red-500/40 bg-red-500/10 p-3.5 text-xs text-red-300 flex items-center gap-2"
             >
-              <div className="flex items-center gap-2">
-                <span className="font-mono font-bold text-red-400">AUTH REJECTED:</span>
+              <AlertTriangle className="h-4 w-4 shrink-0 text-red-400" />
+              <div>
+                <span className="font-mono font-bold text-red-400 mr-1">AUTH FAILED:</span>
                 <span>{error}</span>
               </div>
             </div>
@@ -89,49 +101,54 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="identifier"
-                className="block font-mono text-xs font-medium text-[#F3E5AB]"
+                className="block font-mono text-xs font-medium text-[#A3A7B0] uppercase"
               >
-                Analyst ID / Email / Username
+                Analyst ID / Email / Callsign
               </label>
-              <div className="mt-1.5">
+              <div className="relative mt-1.5">
+                <User className="absolute left-3.5 top-2.5 h-4 w-4 text-[#737984]" />
                 <input
                   id="identifier"
                   name="identifier"
                   type="text"
-                  required
                   autoComplete="username"
+                  required
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
-                  placeholder="analyst_callsign or name@aicf.internal"
-                  className="block w-full rounded-lg border border-[#2B2F3D] bg-[#191C24] px-3.5 py-2.5 text-sm text-[#F8F9FA] placeholder-[#4B5563] shadow-inner focus:border-[#D4AF37] focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                  placeholder="analyst@aicf.org or username"
+                  className="w-full rounded-xl border border-[#292D35] bg-[#090A0D] pl-10 pr-4 py-2.5 text-xs text-[#F5F5F2] placeholder-[#737984] focus:border-[#D6B15E] focus:outline-hidden font-mono"
                 />
               </div>
             </div>
 
             <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block font-mono text-xs font-medium text-[#F3E5AB]"
-                >
-                  Cryptographic Token / Password
-                </label>
-                <span className="text-[10px] text-[#9FA6B2]">
-                  Argon2id Verified
-                </span>
-              </div>
-              <div className="mt-1.5">
+              <label
+                htmlFor="password"
+                className="block font-mono text-xs font-medium text-[#A3A7B0] uppercase"
+              >
+                Password
+              </label>
+              <div className="relative mt-1.5">
+                <Lock className="absolute left-3.5 top-2.5 h-4 w-4 text-[#737984]" />
                 <input
                   id="password"
                   name="password"
-                  type="password"
-                  required
+                  type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
+                  required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••••••"
-                  className="block w-full rounded-lg border border-[#2B2F3D] bg-[#191C24] px-3.5 py-2.5 text-sm text-[#F8F9FA] placeholder-[#4B5563] shadow-inner focus:border-[#D4AF37] focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                  placeholder="••••••••••••"
+                  className="w-full rounded-xl border border-[#292D35] bg-[#090A0D] pl-10 pr-10 py-2.5 text-xs text-[#F5F5F2] placeholder-[#737984] focus:border-[#D6B15E] focus:outline-hidden font-mono"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-2.5 text-[#737984] hover:text-[#F5F5F2] transition-colors cursor-pointer"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
               </div>
             </div>
 
@@ -139,24 +156,33 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full rounded-lg border border-[#D4AF37]/50 bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB] px-4 py-2.5 text-center text-sm font-semibold text-black shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#D6B15E]/50 bg-gradient-to-r from-[#D6B15E] to-[#F0D58A] py-2.5 font-mono text-xs font-bold text-[#090A0D] shadow-[0_0_15px_rgba(214,177,94,0.2)] hover:opacity-95 disabled:opacity-50 transition-all cursor-pointer"
               >
-                {isSubmitting ? "Establishing Session..." : "Authorize Session"}
+                {isSubmitting ? (
+                  <>
+                    <span className="h-3 w-3 animate-spin rounded-full border-2 border-black border-t-transparent" />
+                    <span>Verifying Credentials...</span>
+                  </>
+                ) : (
+                  <>
+                    <LogIn className="h-4 w-4" />
+                    <span>Authenticate &amp; Launch Console</span>
+                  </>
+                )}
               </button>
             </div>
           </form>
 
-          {/* Footer Link */}
-          <div className="mt-6 border-t border-[#2B2F3D]/80 pt-4 text-center">
-            <p className="text-xs text-[#9FA6B2]">
-              Need analyst credentials?{" "}
-              <Link
-                href="/register"
-                className="font-medium text-[#D4AF37] underline underline-offset-4 hover:text-[#F3E5AB]"
-              >
-                Register an Account
-              </Link>
-            </p>
+          {/* Footer Navigation */}
+          <div className="mt-6 border-t border-[#292D35] pt-4 text-center text-xs text-[#A3A7B0]">
+            Need new credentials?{" "}
+            <Link
+              href="/register"
+              className="font-medium text-[#D6B15E] hover:text-[#F0D58A] transition-colors inline-flex items-center gap-1"
+            >
+              <span>Register new account</span>
+              <ArrowRight className="h-3 w-3" />
+            </Link>
           </div>
         </div>
       </div>

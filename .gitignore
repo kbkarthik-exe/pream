@@ -42,3 +42,9 @@ Thumbs.db
 *.sqlite
 .playwright-mcp/
 
+# Temporary, Worktrees & Backups
+frontend_upgrade_worktree/
+scratch/
+backups/
+Microsoft/
+

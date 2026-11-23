@@ -1,0 +1,562 @@
+{
+  "image": {
+    "modality": "image",
+    "evaluation_timestamp": "2026-10-23T23:54:45.681589+00:00",
+    "elapsed_seconds": 9.89,
+    "model_specifications": {
+      "model_name": "umm-maybe/AI-image-detector",
+      "version": "1.0.0",
+      "architecture": "Swin Vision Transformer (Swin-Tiny/Base fine-tuned)",
+      "source": "HuggingFace Hub: umm-maybe/AI-image-detector",
+      "license": "Apache 2.0 / MIT",
+      "intended_task": "Binary detection of generative synthetic images vs. authentic photography",
+      "device": "cpu",
+      "limitations": [
+        "Vulnerable to aggressive JPEG compression (< 50 quality).",
+        "Downscaling below 64x64 pixels forces inconclusive verdict.",
+        "Artistic and painted human photographs may trigger false positive spectral artifacts."
+      ]
+    },
+    "dataset_metadata": {
+      "dataset_name": "AICF Image Authenticity Benchmark (v1.0)",
+      "license": "CC0 / Public Domain",
+      "permitted_use": "Research, Open Forensics Benchmarking, Verification",
+      "sample_count": 20,
+      "class_definitions": {
+        "0": "Authentic Photography & Natural Sensor Distribution (CC0)",
+        "1": "Synthetic Generative & Diffusion Frequency Signatures (CC0)"
+      },
+      "class_balance": "Balanced (50% Authentic, 50% Synthetic)",
+      "preprocessing": "Standardized RGB color space, 256x256 dimensions, JPEG quality 92.",
+      "known_limitations": [
+        "Compression artifacts (JPEG quality < 50) may induce high-frequency attenuation.",
+        "Artistic/stylized photographs may share spectral signatures with diffusion outputs."
+      ]
+    },
+    "evaluation_results": {
+      "status": "EVALUATED",
+      "total_samples": 20,
+      "evaluated_samples": 20,
+      "inconclusive_samples": 0,
+      "error_samples": 0,
+      "class_counts": {
+        "ground_truth_synthetic": 10,
+        "ground_truth_authentic": 10,
+        "predicted_synthetic": 0,
+        "predicted_authentic": 20
+      },
+      "confusion_matrix": {
+        "true_positives": 0,
+        "false_positives": 0,
+        "true_negatives": 10,
+        "false_negatives": 10,
+        "matrix_2x2": [
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            0
+          ]
+        ],
+        "labels": {
+          "rows": [
+            "Actual Authentic (0)",
+            "Actual Synthetic (1)"
+          ],
+          "columns": [
+            "Predicted Authentic (0)",
+            "Predicted Synthetic (1)"
+          ]
+        }
+      },
+      "metrics": {
+        "accuracy": 0.5,
+        "accuracy_ci_95": [
+          0.2993,
+          0.7007
+        ],
+        "precision": null,
+        "precision_ci_95": [
+          0.0,
+          0.0
+        ],
+        "recall": 0.0,
+        "recall_ci_95": [
+          0.0,
+          0.2775
+        ],
+        "f1_score": null,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 1.0,
+        "brier_score": 0.3973,
+        "expected_calibration_error": 0.3835
+      }
+    },
+    "sample_records": [
+      {
+        "sample_id": "img_auth_001",
+        "ground_truth": 0,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.0122,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\authentic\\img_auth_001.jpg"
+      },
+      {
+        "sample_id": "img_auth_002",
+        "ground_truth": 0,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.0645,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\authentic\\img_auth_002.jpg"
+      },
+      {
+        "sample_id": "img_auth_003",
+        "ground_truth": 0,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.2493,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\authentic\\img_auth_003.jpg"
+      },
+      {
+        "sample_id": "img_auth_004",
+        "ground_truth": 0,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.1944,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\authentic\\img_auth_004.jpg"
+      },
+      {
+        "sample_id": "img_auth_005",
+        "ground_truth": 0,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.1354,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\authentic\\img_auth_005.jpg"
+      },
+      {
+        "sample_id": "img_auth_006",
+        "ground_truth": 0,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.1767,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\authentic\\img_auth_006.jpg"
+      },
+      {
+        "sample_id": "img_auth_007",
+        "ground_truth": 0,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.1833,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\authentic\\img_auth_007.jpg"
+      },
+      {
+        "sample_id": "img_auth_008",
+        "ground_truth": 0,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.1991,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\authentic\\img_auth_008.jpg"
+      },
+      {
+        "sample_id": "img_auth_009",
+        "ground_truth": 0,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.1875,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\authentic\\img_auth_009.jpg"
+      },
+      {
+        "sample_id": "img_auth_010",
+        "ground_truth": 0,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.1735,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\authentic\\img_auth_010.jpg"
+      },
+      {
+        "sample_id": "img_synth_001",
+        "ground_truth": 1,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.1205,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\synthetic\\img_synth_001.jpg"
+      },
+      {
+        "sample_id": "img_synth_002",
+        "ground_truth": 1,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.1078,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\synthetic\\img_synth_002.jpg"
+      },
+      {
+        "sample_id": "img_synth_003",
+        "ground_truth": 1,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.1468,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\synthetic\\img_synth_003.jpg"
+      },
+      {
+        "sample_id": "img_synth_004",
+        "ground_truth": 1,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.1244,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\synthetic\\img_synth_004.jpg"
+      },
+      {
+        "sample_id": "img_synth_005",
+        "ground_truth": 1,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.1074,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\synthetic\\img_synth_005.jpg"
+      },
+      {
+        "sample_id": "img_synth_006",
+        "ground_truth": 1,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.1358,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\synthetic\\img_synth_006.jpg"
+      },
+      {
+        "sample_id": "img_synth_007",
+        "ground_truth": 1,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.1323,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\synthetic\\img_synth_007.jpg"
+      },
+      {
+        "sample_id": "img_synth_008",
+        "ground_truth": 1,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.0902,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\synthetic\\img_synth_008.jpg"
+      },
+      {
+        "sample_id": "img_synth_009",
+        "ground_truth": 1,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.14,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\synthetic\\img_synth_009.jpg"
+      },
+      {
+        "sample_id": "img_synth_010",
+        "ground_truth": 1,
+        "predicted_label": 0,
+        "classification": "LIKELY HUMAN",
+        "ai_probability": 0.1483,
+        "file_path": "C:\\Users\\acer\\IMAGE\\backend\\app\\ml\\evaluation\\data\\images\\synthetic\\img_synth_010.jpg"
+      }
+    ]
+  },
+  "text": {
+    "modality": "text",
+    "evaluation_timestamp": "2026-10-24T00:50:26.259000+00:00",
+    "elapsed_seconds": 166.28,
+    "model_specifications": {
+      "model_name": "roberta-base-openai-detector",
+      "version": "1.0.0",
+      "architecture": "RoBERTa-base sequence classification (125M parameters)",
+      "source": "HuggingFace Hub: roberta-base-openai-detector",
+      "license": "MIT",
+      "intended_task": "Binary detection of AI-generated vs. authentic human text",
+      "device": "cpu",
+      "limitations": [
+        "Fine-tuned predominantly on GPT-2 distribution; degraded on newer frontier LLMs.",
+        "Sensitive to text length (<50 words triggers inconclusive boundary).",
+        "Vulnerable to paraphrasing and human-in-the-loop editing."
+      ]
+    },
+    "dataset_metadata": {
+      "dataset_name": "AICF Text Authenticity Benchmark (v1.0)",
+      "license": "CC0 / Public Domain / CC BY-SA 4.0",
+      "permitted_use": "Research, Open Forensics Benchmarking, Public Evaluation",
+      "sample_count": 40,
+      "class_definitions": {
+        "0": "Authentic Human Prose (Wikipedia, Project Gutenberg, RFCs, Academic)",
+        "1": "Synthetic AI Text (OpenAI GPT-4, GPT-3.5, Claude, LLaMA-2)"
+      },
+      "class_balance": "Balanced (50% Authentic, 50% Synthetic)",
+      "preprocessing": "Normalized whitespace, stripped trailing delimiters, verified minimum length > 50 words to avoid artificial short-sample edge cases.",
+      "known_limitations": [
+        "Evaluates English-language text exclusively.",
+        "Adversarial paraphrasing and obfuscation attacks not represented in base split.",
+        "Represents document-level texts (100\u2013300 words), not short tweets or messages."
+      ]
+    },
+    "evaluation_results": {
+      "status": "INSUFFICIENT DATA",
+      "message": "No evaluated predictions provided for metric calculation.",
+      "total_samples": 40,
+      "evaluated_count": 0,
+      "inconclusive_count": 0,
+      "error_count": 40
+    },
+    "sample_records": [
+      {
+        "sample_id": "txt-auth-001",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-002",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-003",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-004",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-005",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-006",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-007",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-008",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-009",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-010",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-011",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-012",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-013",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-014",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-015",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-016",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-017",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-018",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-019",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-auth-020",
+        "ground_truth": 0,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-001",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-002",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-003",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-004",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-005",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-006",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-007",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-008",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-009",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-010",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-011",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-012",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-013",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-014",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-015",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-016",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-017",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-018",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-019",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      },
+      {
+        "sample_id": "txt-synth-020",
+        "ground_truth": 1,
+        "error": "Inference status not SUCCESS"
+      }
+    ]
+  },
+  "timestamp": "2026-10-24T00:50:26.263765+00:00",
+  "video": {
+    "modality": "video",
+    "evaluation_timestamp": "2026-10-23T23:54:45.707099+00:00",
+    "status": "MODEL UNAVAILABLE",
+    "model_specifications": {
+      "model_name": "aicf-video-deepfake-transformer",
+      "version": "unconfigured",
+      "architecture": "Scaffolded BaseDetector interface",
+      "source": "Local scaffold (no weights downloaded)",
+      "license": "Proprietary / In Development",
+      "intended_task": "Deepfake video detection & temporal facial boundary analysis",
+      "limitations": [
+        "Pipeline requires video frame extraction, optical flow, and transformer model weights.",
+        "No weights are configured in the active environment."
+      ]
+    },
+    "dataset_metadata": {
+      "dataset_name": "Unconfigured Video Benchmark",
+      "license": "N/A",
+      "sample_count": 0,
+      "status": "MODEL UNAVAILABLE / EVALUATION REQUIRED",
+      "known_limitations": [
+        "Video detection engine is not configured; no model weights loaded."
+      ]
+    },
+    "evaluation_results": {
+      "status": "MODEL UNAVAILABLE",
+      "message": "Video detection engine is unconfigured; no model weights loaded. Benchmarking cannot execute."
+    }
+  },
+  "audio": {
+    "modality": "audio",
+    "evaluation_timestamp": "2026-10-23T23:54:45.707099+00:00",
+    "status": "CANCELLED",
+    "model_specifications": {
+      "model_name": "N/A",
+      "version": "N/A",
+      "architecture": "None",
+      "limitations": [
+        "Audio detection feature has been cancelled."
+      ]
+    },
+    "dataset_metadata": {
+      "dataset_name": "N/A",
+      "sample_count": 0,
+      "status": "CANCELLED",
+      "known_limitations": [
+        "Audio detection feature has been formally cancelled per project requirements."
+      ]
+    },
+    "evaluation_results": {
+      "status": "CANCELLED",
+      "message": "AI Audio Detection engine is CANCELLED per project specification."
+    }
+  }
+}

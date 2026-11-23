@@ -349,3 +349,135 @@ async def test_image_analysis_no_temp_file_leak(client: AsyncClient):
     new_files = final_files - initial_files
     # Verify no persistent AICF image dump files were orphaned
     assert not any("aicf" in f.lower() and "clean_check" in f.lower() for f in new_files)
+
+
+# 16. Multi-Detector Image Ensemble Calibration
+def test_image_analysis_ensemble_calibration():
+    """Verify ImageEnsembleAggregator applies temperature scaling and covariance discount."""
+    from backend.app.ml.image.ensemble import ImageEnsembleAggregator
+
+    aggregator = ImageEnsembleAggregator(temperature=1.20, covariance_rho=0.68)
+
+    # Moderate extreme probability via temperature scaling
+    cal_extreme = aggregator.calibrate_probability(0.99)
+    assert 0.85 <= cal_extreme < 0.99, f"Expected moderated probability, got {cal_extreme}"
+
+    # Verify multi-model consensus discounting correlated agreement
+    res = aggregator.aggregate(
+        swin_score=0.92,
+        vit_score=0.90,
+        fft_features={"spectral_anisotropy": 0.52, "high_freq_ratio": 0.08},
+        noise_features={"noise_variance": 12.0},
+        ela_features={"ela_discontinuity_score": 7.5},
+        image_dims=(256, 256),
+    )
+    assert res["active_detectors_count"] == 2
+    assert res["classification"] == "Likely AI-generated"
+    assert res["consensus_score"] > 0.70
+    assert any("covariance discount" in note.lower() for note in res["notes"])
+
+
+# 17. Secondary ViT Image Detector Execution
+def test_image_analysis_secondary_vit_execution():
+    """Verify VitImageDetector handles predictions and pre-flight gates gracefully."""
+    from backend.app.ml.image.detector import VitImageDetector
+    from PIL import Image
+
+    vit = VitImageDetector()
+    test_img = Image.new("RGB", (128, 128), color=(100, 150, 200))
+    ai_prob, human_prob, latency, evidence = vit.predict(test_img)
+
+    # If weights are cached, returns valid probabilities; if resource constrained, returns None with honest evidence
+    if vit.is_loaded:
+        assert ai_prob is not None
+        assert human_prob is not None
+        assert 0.0 <= ai_prob <= 1.0
+        assert latency >= 0.0
+    else:
+        assert vit.status in ("UNAVAILABLE", "RESOURCE_CONSTRAINED")
+        assert len(evidence) > 0
+
+
+# 18. Error Level Analysis & Explainability Heatmap
+def test_image_analysis_ela_explainability_heatmap():
+    """Verify Error Level Analysis generates valid quantitative metrics and data URLs."""
+    from backend.app.ml.image.heatmap import (
+        compute_error_level_analysis,
+        generate_image_forensic_heatmap,
+    )
+    from PIL import Image
+
+    test_img = Image.new("RGB", (128, 128), color=(180, 90, 60))
+    ela = compute_error_level_analysis(test_img, quality=95)
+    assert "ela_mean_error" in ela
+    assert "ela_discontinuity_score" in ela
+    assert ela["heatmap_data_url"].startswith("data:image/png;base64,")
+
+    full_heat = generate_image_forensic_heatmap(test_img)
+    assert "heatmap_data_url" in full_heat
+    assert "explanation" in full_heat
+    assert len(full_heat["explanation"]) > 20
+
+
+# 19. Multi-Detector API Response
+@pytest.mark.asyncio
+async def test_image_analysis_multi_detector_api_response(client: AsyncClient):
+    """Verify POST /api/v1/image/analyze returns structured detector_scores, ensemble, and heatmap."""
+    cookies = await create_authenticated_analyst(client, "multidet")
+    client.cookies = cookies
+
+    img_bytes = create_in_memory_image(128, 128, "PNG")
+    files = {"file": ("multi_test.png", img_bytes, "image/png")}
+    resp = await client.post("/api/v1/image/analyze", files=files)
+    assert resp.status_code == 200
+
+    data = resp.json()
+    assert "detector_scores" in data
+    assert len(data["detector_scores"]) >= 3
+    assert any(d["detector_id"] == "umm-maybe/AI-image-detector" for d in data["detector_scores"])
+    assert any(d["detector_id"] == "spectral-spatial-profiler" for d in data["detector_scores"])
+    assert any(d["detector_id"] == "error-level-analysis" for d in data["detector_scores"])
+
+    assert "ensemble" in data
+    assert data["ensemble"] is not None
+    assert "consensus_score" in data["ensemble"]
+    assert "temperature_applied" in data["ensemble"]
+
+    assert "heatmap" in data
+    assert data["heatmap"] is not None
+    assert data["heatmap"]["heatmap_data_url"].startswith("data:image/png;base64,")
+
+
+# 20. PDF Generation with Multi-Detector Consensus Table
+@pytest.mark.asyncio
+async def test_image_analysis_pdf_with_ensemble(client: AsyncClient):
+    """Verify PDF generator successfully compiles image report containing ensemble and ELA tables."""
+    cookies = await create_authenticated_analyst(client, "pdfens")
+    client.cookies = cookies
+
+    img_bytes = create_in_memory_image(128, 128, "JPEG")
+    files = {"file": ("pdf_target.jpg", img_bytes, "image/jpeg")}
+    post_resp = await client.post("/api/v1/image/analyze", files=files)
+    assert post_resp.status_code == 200
+    analysis_id = post_resp.json()["analysis_id"]
+
+    pdf_resp = await client.get(f"/api/v1/image/{analysis_id}/pdf")
+    assert pdf_resp.status_code == 200
+    assert pdf_resp.headers["content-type"] == "application/pdf"
+    assert pdf_resp.content.startswith(b"%PDF-")
+    assert len(pdf_resp.content) > 5000
+
+
+# 21. Hive AI Image Cloud Adapter Handling
+@pytest.mark.asyncio
+async def test_image_analysis_hive_cloud_adapter_unconfigured():
+    """Verify HiveImageAdapter handles missing API key cleanly without failure."""
+    from backend.app.ml.image.hive_adapter import HiveImageAdapter
+
+    adapter = HiveImageAdapter(api_key=None)
+    assert not adapter.is_configured
+
+    res = await adapter.analyze_image(b"fake_bytes", "test.png")
+    assert not res.is_configured
+    assert res.status == "CONFIGURATION_REQUIRED"
+    assert "not configured" in res.error_message.lower()

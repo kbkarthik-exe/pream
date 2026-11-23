@@ -14,8 +14,8 @@ if TYPE_CHECKING:
 class ImageAnalysisRecord(Base):
     """Database model for recorded AI image forensic investigations.
 
-    Stores cryptographic SHA-256 hash, image metrics, model telemetry, and provenance
-    findings without permanently persisting the raw uploaded image file.
+    Stores cryptographic SHA-256 hash, image metrics, model telemetry, provenance,
+    multi-detector ensemble breakdown, and forensic heatmap metadata.
     """
 
     __tablename__ = "image_analysis_records"
@@ -48,6 +48,10 @@ class ImageAnalysisRecord(Base):
     evidence_json: Mapped[str] = mapped_column(Text, nullable=False)
     provenance_json: Mapped[str] = mapped_column(Text, nullable=False)
     limitations_text: Mapped[str] = mapped_column(Text, nullable=False)
+
+    # Multi-Detector Ensemble & Heatmaps
+    ensemble_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    heatmap_json: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     status: Mapped[str] = mapped_column(String(32), default="SUCCESS", nullable=False)
     processing_time_ms: Mapped[float] = mapped_column(Float, nullable=False)

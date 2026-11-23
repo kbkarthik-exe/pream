@@ -6,10 +6,12 @@ from sqlalchemy import Boolean, DateTime, Integer, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
+    from backend.app.models.cloud_credential import UserCloudCredential
     from backend.app.models.image_analysis import ImageAnalysisRecord
     from backend.app.models.report import ForensicReport
     from backend.app.models.session import UserSession
     from backend.app.models.text_analysis import TextAnalysisRecord
+    from backend.app.models.video import VideoAnalysisRecord
 
 
 class User(Base):
@@ -40,4 +42,10 @@ class User(Base):
     )
     image_analyses: Mapped[list["ImageAnalysisRecord"]] = relationship(
         "ImageAnalysisRecord", back_populates="user", cascade="all, delete-orphan"
+    )
+    video_analyses: Mapped[list["VideoAnalysisRecord"]] = relationship(
+        "VideoAnalysisRecord", back_populates="user", cascade="all, delete-orphan"
+    )
+    cloud_credentials: Mapped[list["UserCloudCredential"]] = relationship(
+        "UserCloudCredential", back_populates="user", cascade="all, delete-orphan"
     )

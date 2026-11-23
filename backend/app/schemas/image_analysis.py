@@ -22,6 +22,37 @@ class ProvenanceInfo(BaseModel):
     provenance_summary: str = ""
 
 
+class ImageDetectorScore(BaseModel):
+    detector_id: str
+    model_name: str
+    status: str  # "READY", "RESOURCE_CONSTRAINED", "UNAVAILABLE", "CONFIGURATION_REQUIRED", "ERROR"
+    raw_probability: float | None = None
+    calibrated_score: float | None = None
+    latency_ms: float = 0.0
+    evidence: list[str] = Field(default_factory=list)
+
+
+class ImageHeatmapData(BaseModel):
+    method: str
+    ela_mean_error: float = 0.0
+    ela_max_error: float = 0.0
+    ela_discontinuity_score: float = 0.0
+    heatmap_data_url: str | None = None
+    noise_residual_data_url: str | None = None
+    explanation: str = ""
+
+
+class ImageEnsembleBreakdown(BaseModel):
+    consensus_score: float
+    confidence: float
+    classification: str
+    temperature_applied: float
+    covariance_penalty: float
+    spectral_prior_weight: float
+    active_detectors_count: int
+    notes: list[str] = Field(default_factory=list)
+
+
 class ImageAnalysisResponse(BaseModel):
     """Structured result returned by the image forensics engine."""
 
@@ -53,6 +84,11 @@ class ImageAnalysisResponse(BaseModel):
     provenance: ProvenanceInfo | None = None
     evidence: list[ImageEvidenceItem] = Field(default_factory=list)
     limitations: list[str] = Field(default_factory=list)
+
+    # Multi-Detector Ensemble & Heatmaps
+    detector_scores: list[ImageDetectorScore] = Field(default_factory=list)
+    ensemble: ImageEnsembleBreakdown | None = None
+    heatmap: ImageHeatmapData | None = None
 
     processing_time_ms: float
     created_at: datetime

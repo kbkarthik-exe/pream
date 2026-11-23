@@ -9,16 +9,31 @@ from backend.app.core.config import settings
 from backend.app.core.rate_limiter import rate_limiter
 from backend.app.db.session import get_db
 from backend.app.ml.image import image_detector
+from backend.app.ml.image.forensics.security_hardening import validate_image_security
 from backend.app.models.image_analysis import ImageAnalysisRecord
 from backend.app.models.report import ForensicReport
 from backend.app.models.user import User
 from backend.app.schemas.image_analysis import (
     ImageAnalysisHistoryItem,
     ImageAnalysisResponse,
+    ImageDetectorScore,
+    ImageEnsembleBreakdown,
     ImageEvidenceItem,
+    ImageHeatmapData,
     ProvenanceInfo,
 )
-from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile, status
+from backend.app.services.pdf_generator import generate_image_analysis_pdf
+from fastapi import (
+    APIRouter,
+    Depends,
+    File,
+    Form,
+    HTTPException,
+    Request,
+    Response,
+    UploadFile,
+    status,
+)
 from PIL import Image, UnidentifiedImageError
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -67,63 +82,65 @@ async def analyze_image(
     file_size = len(file_bytes)
     file_name = file.filename or "uploaded_image"
 
-    if file_size == 0:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Uploaded file is empty (0 bytes). Please upload a valid image file.",
+    # 3. Server-side Pre-decode Security Gate (Decompression bomb, dimension sniff, format validation)
+    is_safe, rejection_reason, security_telemetry = validate_image_security(
+        raw_bytes=file_bytes,
+        max_pixels=settings.IMAGE_MAX_PIXELS,
+        max_dimension=8192,
+        max_file_bytes=settings.IMAGE_MAX_SIZE_BYTES,
+    )
+    if not is_safe:
+        sec_status = security_telemetry.get("status", "UNKNOWN")
+        logger.warning(
+            "Security gate rejected upload '%s' [status=%s]: %s",
+            file_name,
+            sec_status,
+            rejection_reason,
         )
 
-    if file_size > settings.IMAGE_MAX_SIZE_BYTES:
-        max_mb = settings.IMAGE_MAX_SIZE_BYTES / (1024 * 1024)
-        file_mb = file_size / (1024 * 1024)
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=(
-                f"File size ({file_mb:.1f} MB) exceeds maximum allowed limit of {max_mb:.0f} MB."
-            ),
-        )
-
-    # 3. Server-side validation of image content & raster safety using Pillow
-    try:
-        # Pillow safely validates header without executing code
-        with Image.open(io.BytesIO(file_bytes)) as pil_img:
-            img_format = (pil_img.format or "").upper()
-            width, height = pil_img.size
-
-            if img_format not in SUPPORTED_FORMATS:
-                raise HTTPException(
-                    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                    detail=(
-                        f"Unsupported image format '{img_format or 'UNKNOWN'}'. "
-                        f"Supported formats are: JPEG, PNG, and WebP."
-                    ),
+        # Formulate safe, structured error responses adhering to API conventions without leaking internal info
+        if sec_status == "EMPTY_STREAM":
+            detail = "Uploaded file is empty (0 bytes). Please upload a valid image file."
+        elif sec_status == "OVERSIZED_STREAM":
+            max_mb = settings.IMAGE_MAX_SIZE_BYTES / (1024 * 1024)
+            file_mb = file_size / (1024 * 1024)
+            detail = f"File size ({file_mb:.1f} MB) exceeds maximum allowed limit of {max_mb:.0f} MB."
+        elif sec_status in ("DECOMPRESSION_BOMB_DETECTED", "DECOMPRESSION_BOMB_TRIGGERED"):
+            w = security_telemetry.get("width")
+            h = security_telemetry.get("height")
+            tot = security_telemetry.get("total_pixels")
+            if w and h and tot:
+                detail = (
+                    f"Image resolution ({w}x{h} = {tot:,} pixels) exceeds "
+                    f"maximum platform safety limit of {settings.IMAGE_MAX_PIXELS:,} pixels."
                 )
-
-            # Check excessive dimensions / pixel bomb protection
-            total_pixels = width * height
-            if total_pixels > settings.IMAGE_MAX_PIXELS or width > 8192 or height > 8192:
-                raise HTTPException(
-                    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                    detail=(
-                        f"Image resolution ({width}x{height} = {total_pixels:,} pixels) exceeds "
-                        f"maximum platform safety limit of {settings.IMAGE_MAX_PIXELS:,} pixels."
-                    ),
+            else:
+                detail = (
+                    f"Decompression bomb blocked: Image resolution exceeds "
+                    f"maximum platform safety limit of {settings.IMAGE_MAX_PIXELS:,} pixels."
                 )
-    except UnidentifiedImageError as err:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=(
+        elif sec_status == "AXIS_LIMIT_EXCEEDED":
+            w = security_telemetry.get("width", "unknown")
+            h = security_telemetry.get("height", "unknown")
+            detail = f"Image dimensions ({w}x{h}) exceed maximum allowable axis threshold of 8192px."
+        elif sec_status == "UNSUPPORTED_FORMAT":
+            fmt = security_telemetry.get("format", "UNKNOWN")
+            detail = (
+                f"Unsupported image format '{fmt}'. "
+                f"Supported formats are: JPEG, PNG, and WebP."
+            )
+        elif sec_status == "MALFORMED_HEADER":
+            detail = (
                 "File content is not a recognized image or is corrupted. "
                 "Only JPEG, PNG, and WebP are supported."
-            ),
-        ) from err
-    except HTTPException:
-        raise
-    except Exception as exc:
+            )
+        else:
+            detail = "Uploaded file failed security validation checks."
+
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Corrupted or unreadable image content: {exc}",
-        ) from exc
+            detail=detail,
+        )
 
     # 4. Execute forensics engine analysis
     result = image_detector.analyze_image_bytes(file_bytes, file_name=file_name)
@@ -154,6 +171,12 @@ async def analyze_image(
 
     fft_features = result.get("fft_features", {})
     noise_features = result.get("noise_features", {})
+    detector_scores_data = result.get("detector_scores", [])
+    detector_scores = [ImageDetectorScore(**d) for d in detector_scores_data]
+    ensemble_data = result.get("ensemble")
+    ensemble_obj = ImageEnsembleBreakdown(**ensemble_data) if ensemble_data else None
+    heatmap_data = result.get("heatmap")
+    heatmap_obj = ImageHeatmapData(**heatmap_data) if heatmap_data else None
 
     # 5. Persist analysis record (with strict user isolation and privacy protection)
     record = ImageAnalysisRecord(
@@ -180,6 +203,8 @@ async def analyze_image(
         evidence_json=json.dumps([item.model_dump() for item in evidence_items]),
         provenance_json=json.dumps(provenance_data),
         limitations_text=json.dumps(result.get("limitations", [])),
+        ensemble_json=json.dumps(ensemble_data) if ensemble_data else None,
+        heatmap_json=json.dumps(heatmap_data) if heatmap_data else None,
         status=result["status"],
         processing_time_ms=result["processing_time_ms"],
     )
@@ -240,6 +265,9 @@ async def analyze_image(
         provenance=provenance_obj,
         evidence=evidence_items,
         limitations=result.get("limitations", []),
+        detector_scores=detector_scores,
+        ensemble=ensemble_obj,
+        heatmap=heatmap_obj,
         processing_time_ms=record.processing_time_ms,
         created_at=record.created_at,
         case_report_id=case_report_id,
@@ -315,14 +343,18 @@ async def get_image_analysis(
 
     try:
         prov_dict = json.loads(record.provenance_json)
-        provenance_obj = ProvenanceInfo(
-            has_exif=prov_dict.get("has_exif", False),
-            exif_summary=prov_dict.get("exif_summary", {}),
-            has_ai_metadata=prov_dict.get("has_ai_metadata", False),
-            ai_prompt_snippet=prov_dict.get("ai_prompt_snippet"),
-            has_c2pa=prov_dict.get("has_c2pa", False),
-            c2pa_finding=prov_dict.get("c2pa_finding", ""),
-            provenance_summary=prov_dict.get("provenance_summary", ""),
+        provenance_obj = (
+            ProvenanceInfo(
+                has_exif=prov_dict.get("has_exif", False),
+                exif_summary=prov_dict.get("exif_summary", {}),
+                has_ai_metadata=prov_dict.get("has_ai_metadata", False),
+                ai_prompt_snippet=prov_dict.get("ai_prompt_snippet"),
+                has_c2pa=prov_dict.get("has_c2pa", False),
+                c2pa_finding=prov_dict.get("c2pa_finding", ""),
+                provenance_summary=prov_dict.get("provenance_summary", ""),
+            )
+            if prov_dict
+            else None
         )
     except Exception:
         provenance_obj = None
@@ -331,6 +363,36 @@ async def get_image_analysis(
         limitations = json.loads(record.limitations_text)
     except Exception:
         limitations = []
+
+    ensemble_obj: ImageEnsembleBreakdown | None = None
+    detector_scores: list[ImageDetectorScore] = []
+    if getattr(record, "ensemble_json", None):
+        try:
+            ens_dict = json.loads(record.ensemble_json)
+            if ens_dict:
+                scores_data = ens_dict.get("detector_scores", [])
+                detector_scores = [ImageDetectorScore(**s) for s in scores_data]
+                ensemble_obj = ImageEnsembleBreakdown(
+                    consensus_score=ens_dict["consensus_score"],
+                    confidence=ens_dict["confidence"],
+                    classification=ens_dict["classification"],
+                    temperature_applied=ens_dict["temperature_applied"],
+                    covariance_penalty=ens_dict["covariance_penalty"],
+                    spectral_prior_weight=ens_dict["spectral_prior_weight"],
+                    active_detectors_count=ens_dict["active_detectors_count"],
+                    notes=ens_dict.get("notes", []),
+                )
+        except Exception:
+            ensemble_obj = None
+
+    heatmap_obj: ImageHeatmapData | None = None
+    if getattr(record, "heatmap_json", None):
+        try:
+            heat_dict = json.loads(record.heatmap_json)
+            if heat_dict:
+                heatmap_obj = ImageHeatmapData(**heat_dict)
+        except Exception:
+            heatmap_obj = None
 
     return ImageAnalysisResponse(
         analysis_id=record.id,
@@ -357,7 +419,54 @@ async def get_image_analysis(
         provenance=provenance_obj,
         evidence=evidence_items,
         limitations=limitations,
+        detector_scores=detector_scores,
+        ensemble=ensemble_obj,
+        heatmap=heatmap_obj,
         processing_time_ms=record.processing_time_ms,
         created_at=record.created_at,
         case_report_id=None,
+    )
+
+
+@router.get(
+    "/{analysis_id}/pdf",
+    summary="Download Image Analysis PDF Report",
+    description="Streams an explainable forensic PDF report for a recorded image analysis.",
+    response_class=Response,
+    responses={
+        200: {
+            "content": {"application/pdf": {}},
+            "description": "Returns the generated forensic examination PDF.",
+        }
+    },
+)
+async def download_image_analysis_pdf(
+    analysis_id: int,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> Response:
+    record = await db.get(ImageAnalysisRecord, analysis_id)
+    if not record:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Image analysis record #{analysis_id} not found.",
+        )
+
+    if record.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Access denied: You cannot export another analyst's private forensic analysis.",
+        )
+
+    analyst_name = current_user.full_name or current_user.username
+    pdf_bytes = generate_image_analysis_pdf(record, analyst_name=analyst_name)
+
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f'attachment; filename="AICF-Image-Report-{record.id:05d}.pdf"',
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+        },
     )

@@ -1,16 +1,26 @@
 from functools import lru_cache
-from typing import Literal
+from typing import Any, Literal
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "AICF — AI Content Forensics & Authenticity Intelligence Platform"
+    PROJECT_NAME: str = "A Multimodal Deep Learning Framework for Robust Detection of Synthetic Media"
     TAGLINE: str = "Detect. Analyze. Explain. Verify."
     VERSION: str = "0.2.0"
     API_V1_STR: str = "/api/v1"
     ENVIRONMENT: str = "development"
     DEBUG: bool = False
+
+    @field_validator("DEBUG", mode="before")
+    @classmethod
+    def parse_debug(cls, v: Any) -> bool:
+        if isinstance(v, bool):
+            return v
+        if isinstance(v, str):
+            return v.lower() in ("true", "1", "t", "yes", "y", "debug")
+        return bool(v)
 
     # Database
     DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/aicf_db"
@@ -39,6 +49,8 @@ class Settings(BaseSettings):
     RATE_LIMIT_TEXT_WINDOW: int = 60  # seconds
     RATE_LIMIT_IMAGE_MAX: int = 15
     RATE_LIMIT_IMAGE_WINDOW: int = 60  # seconds
+    RATE_LIMIT_VIDEO_MAX: int = 5
+    RATE_LIMIT_VIDEO_WINDOW: int = 60  # seconds
 
     # Text Analysis Engine Configuration
     TEXT_MODEL_NAME: str = "roberta-base-openai-detector"
@@ -57,6 +69,30 @@ class Settings(BaseSettings):
     IMAGE_MIN_DIMENSION: int = 32  # Minimum 32x32 pixels
     IMAGE_AI_THRESHOLD: float = 0.70
     IMAGE_HUMAN_THRESHOLD: float = 0.30
+
+    # Video Analysis Engine Configuration
+    VIDEO_MODEL_NAME: str = "AICF-Video-Forensics-Engine"
+    VIDEO_MODEL_VERSION: str = "1.0.0"
+    VIDEO_FRAME_CLASSIFIER_ID: str = "umm-maybe/AI-image-detector"
+    VIDEO_MAX_FILE_SIZE_BYTES: int = 50 * 1024 * 1024  # 50 MB
+    VIDEO_MAX_DURATION_SECONDS: float = 120.0  # Max 2 minutes
+    VIDEO_MAX_RESOLUTION: int = 3840  # Max width or height (4K boundary)
+    VIDEO_MAX_SAMPLED_FRAMES: int = 30  # Max frames sampled uniformly
+    VIDEO_FRAME_SAMPLE_INTERVAL: float = 1.0  # 1 frame per second
+    VIDEO_PROCESSING_TIMEOUT_SECONDS: float = 60.0
+    VIDEO_AI_THRESHOLD: float = 0.70
+    VIDEO_HUMAN_THRESHOLD: float = 0.30
+
+    # Optional Cloud Verification Providers (Phase 4)
+    HIVE_API_KEY: str | None = None
+    HIVE_API_BASE_URL: str = "https://api.thehive.ai/api/v2"
+
+    GPTZERO_API_KEY: str | None = None
+    GPTZERO_API_BASE_URL: str = "https://api.gptzero.me/v2"
+
+    COPYLEAKS_API_KEY: str | None = None
+    COPYLEAKS_EMAIL: str | None = None
+    COPYLEAKS_API_BASE_URL: str = "https://api.copyleaks.com/v3"
 
     model_config = SettingsConfigDict(
         env_file=(".env", "backend/.env"),

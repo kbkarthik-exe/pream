@@ -1,41 +1,89 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
 :root {
-  --background: #0B0C10;
-  --foreground: #F8F9FA;
-  --color-brand-black: #0B0C10;
-  --color-surface-dark: #12141A;
-  --color-surface-elevated: #191C24;
-  --color-surface-border: #2B2F3D;
-  --color-gold-primary: #D4AF37;
-  --color-gold-light: #F3E5AB;
-  --color-gold-dark: #997A15;
-  --color-gold-glow: rgba(212, 175, 55, 0.15);
-  --color-text-primary: #F8F9FA;
-  --color-text-secondary: #9FA6B2;
-  --color-text-muted: #6B7280;
+  /* Core Brand Tokens */
+  --bg-primary: #090A0D;
+  --bg-sidebar: #0D0F13;
+  --bg-card: #12151B;
+  --bg-elevated: #181C23;
+  --border-subtle: #292D35;
+  --border-focus: #3A404D;
+  --gold-primary: #D6B15E;
+  --gold-highlight: #F0D58A;
+  --gold-muted: #8F763B;
+  --gold-glow: rgba(214, 177, 94, 0.12);
+  --text-primary: #F5F5F2;
+  --text-secondary: #A3A7B0;
+  --text-muted: #737984;
+
+  /* Semantic Status Tokens */
+  --status-success: #22C55E;
+  --status-warning: #F59E0B;
+  --status-error: #EF4444;
+  --status-info: #3B82F6;
+
+  /* Legacy mappings for backward compatibility */
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
+  --color-brand-black: var(--bg-primary);
+  --color-surface-dark: var(--bg-card);
+  --color-surface-elevated: var(--bg-elevated);
+  --color-surface-border: var(--border-subtle);
+  --color-gold-primary: var(--gold-primary);
+  --color-gold-light: var(--gold-highlight);
+  --color-gold-dark: var(--gold-muted);
+  --color-gold-glow: var(--gold-glow);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   min-height: 100vh;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
 /* Subtle forensic grid pattern */
 .forensic-grid {
-  background-size: 40px 40px;
+  background-size: 32px 32px;
   background-image: 
-    linear-gradient(to right, rgba(212, 175, 55, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(212, 175, 55, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, rgba(214, 177, 94, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(214, 177, 94, 0.03) 1px, transparent 1px);
 }
 
-/* Gold glow accent */
+/* Refined gold accents */
 .gold-glow {
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 0 20px rgba(214, 177, 94, 0.12);
 }
 
 .gold-border-glow {
-  border: 1px solid rgba(212, 175, 55, 0.35);
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(214, 177, 94, 0.3);
+  box-shadow: 0 0 16px rgba(214, 177, 94, 0.08);
+}
+
+/* Custom sleek scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090A0D;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #292D35;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3A404D;
 }

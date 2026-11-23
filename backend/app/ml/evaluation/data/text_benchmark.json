@@ -1,0 +1,349 @@
+{
+  "benchmark_name": "AICF Text Authenticity Benchmark (v1.0)",
+  "version": "1.0.0",
+  "created_at": "2026-10-24T00:00:00Z",
+  "license": "CC0 / Public Domain / CC BY-SA 4.0",
+  "description": "Curated, balanced evaluation benchmark for AI Text detection, comprising 20 authentic human-authored corpora and 20 synthetic AI-generated texts across scientific, historical, technical, and literary domains.",
+  "samples": [
+    {
+      "id": "txt-auth-001",
+      "label": 0,
+      "domain": "scientific_biology",
+      "source": "Wikipedia: Photosynthesis (CC BY-SA 4.0)",
+      "license": "CC BY-SA 4.0",
+      "text": "Photosynthesis is a biological process used by plants, algae, and certain bacteria to convert light energy into chemical energy. This chemical energy is stored in carbohydrate molecules, such as sugars, which are synthesized from carbon dioxide and water. In most cases, oxygen is also released as a waste product. Most plants, algae, and cyanobacteria perform oxygenic photosynthesis, which produces oxygen and is largely responsible for producing and maintaining the oxygen content of the Earth's atmosphere."
+    },
+    {
+      "id": "txt-auth-002",
+      "label": 0,
+      "domain": "astrophysics",
+      "source": "NASA / Wikipedia: Hubble Space Telescope (Public Domain)",
+      "license": "Public Domain",
+      "text": "The Hubble Space Telescope was launched into low Earth orbit in 1990 and remains in operation. Although not the first space telescope, Hubble is one of the largest and most versatile, renowned both as a vital research tool and as a public relations boon for astronomy. The Hubble telescope is named after astronomer Edwin Hubble and is one of NASA's Great Observatories. Hubble's orbit outside the distortion of Earth's atmosphere allows it to capture extremely high-resolution images with substantially lower background light."
+    },
+    {
+      "id": "txt-auth-003",
+      "label": 0,
+      "domain": "classic_essay",
+      "source": "Ralph Waldo Emerson, Self-Reliance (1841, Public Domain)",
+      "license": "Public Domain",
+      "text": "There is a time in every man's education when he arrives at the conviction that envy is ignorance; that imitation is suicide; that he must take himself for better, for worse, as his portion; that though the wide universe is full of good, no kernel of nourishing corn can come to him but through his toil bestowed on that plot of ground which is given to him to till. The power which resides in him is new in nature, and none but he knows what that is which he can do, nor does he know until he has tried."
+    },
+    {
+      "id": "txt-auth-004",
+      "label": 0,
+      "domain": "evolutionary_biology",
+      "source": "Charles Darwin, On the Origin of Species (1859, Public Domain)",
+      "license": "Public Domain",
+      "text": "When we look to the individuals of the same variety or sub-variety of our older cultivated plants and animals, one of the first points which strikes us is, that they generally differ much more from each other than do the individuals of any one species or variety in a state of nature. When we reflect on the vast diversity of the plants and animals which have been cultivated, and which have varied during all ages under the most different climates and treatment, we are driven to conclude that this great variability is simply due to our domestic productions having been raised under conditions of life not so uniform."
+    },
+    {
+      "id": "txt-auth-005",
+      "label": 0,
+      "domain": "technical_rfc",
+      "source": "IETF RFC 2616: Hypertext Transfer Protocol -- HTTP/1.1 (Public Domain)",
+      "license": "Public Domain",
+      "text": "The Hypertext Transfer Protocol is an application-level protocol for distributed, collaborative, hypermedia information systems. It is a generic, stateless, protocol which can be used for many tasks beyond its use for hypertext, such as name servers and distributed object management systems, through extension of its request methods, error codes and headers. A feature of HTTP is the typing and negotiation of data representation, allowing systems to be built independently of the data being transferred."
+    },
+    {
+      "id": "txt-auth-006",
+      "label": 0,
+      "domain": "history_ancient",
+      "source": "Wikipedia: Roman Republic (CC BY-SA 4.0)",
+      "license": "CC BY-SA 4.0",
+      "text": "The Roman Republic was the era of classical Roman civilization beginning with the overthrow of the Roman Kingdom, traditionally dated to 509 BC, and ending in 27 BC with the establishment of the Roman Empire. During this period, Rome's control expanded from the city's immediate surroundings to hegemony over the entire Mediterranean world. Roman society under the Republic was primarily a cultural mix of Latin and Etruscan societies, as well as of Sabine, Oscan, and Greek cultural elements."
+    },
+    {
+      "id": "txt-auth-007",
+      "label": 0,
+      "domain": "computer_science",
+      "source": "Alan Turing, On Computable Numbers (1936, Public Domain)",
+      "license": "Public Domain",
+      "text": "The computable numbers may be described briefly as the real numbers whose expressions as a decimal are calculable by finite means. Although the subject of this paper is ostensibly the computable numbers, it is almost equally easy to define and investigate computable functions of an integral variable or a real or computable variable, computable predicates, and so forth. The fundamental problems involved are however the same in each case, and I have chosen the computable numbers for explicit treatment."
+    },
+    {
+      "id": "txt-auth-008",
+      "label": 0,
+      "domain": "geology",
+      "source": "Wikipedia: Plate Tectonics (CC BY-SA 4.0)",
+      "license": "CC BY-SA 4.0",
+      "text": "Plate tectonics is the generally accepted scientific theory that considers the Earth's lithosphere to comprise a number of large tectonic plates which have been slowly moving since about 3.4 billion years ago. The model builds on the concept of continental drift, an idea developed during the first decades of the 20th century. Plate tectonics came to be accepted by geoscientists after seafloor spreading was validated in the mid-to-late 1960s."
+    },
+    {
+      "id": "txt-auth-009",
+      "label": 0,
+      "domain": "historical_speech",
+      "source": "Abraham Lincoln, The Gettysburg Address (1863, Public Domain)",
+      "license": "Public Domain",
+      "text": "Four score and seven years ago our fathers brought forth on this continent, a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal. Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure. We are met on a great battle-field of that war. We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live."
+    },
+    {
+      "id": "txt-auth-010",
+      "label": 0,
+      "domain": "quantum_physics",
+      "source": "Wikipedia: Quantum Entanglement (CC BY-SA 4.0)",
+      "license": "CC BY-SA 4.0",
+      "text": "Quantum entanglement is the phenomenon that occurs when a group of particles interact, or share spatial proximity, in a way such that the quantum state of each particle of the group cannot be described independently of the state of the others, including when the particles are separated by a large distance. The topic of quantum entanglement is at the heart of the disparity between classical and quantum physics: entanglement is a primary feature of quantum mechanics lacking in classical mechanics."
+    },
+    {
+      "id": "txt-auth-011",
+      "label": 0,
+      "domain": "literature",
+      "source": "Mary Shelley, Frankenstein (1818, Public Domain)",
+      "license": "Public Domain",
+      "text": "It was on a dreary night of November that I beheld the accomplishment of my toils. With an anxiety that almost amounted to agony, I collected the instruments of life around me, that I might infuse a spark of being into the lifeless thing that lay at my feet. It was already one in the morning; the rain pattered dismally against the panes, and my candle was nearly burnt out, when, by the glimmer of the half-extinguished light, I saw the dull yellow eye of the creature open; it breathed hard, and a convulsive motion agitated its limbs."
+    },
+    {
+      "id": "txt-auth-012",
+      "label": 0,
+      "domain": "genetics",
+      "source": "Wikipedia: CRISPR Gene Editing (CC BY-SA 4.0)",
+      "license": "CC BY-SA 4.0",
+      "text": "CRISPR gene editing is a genetic engineering technique in molecular biology by which the genomes of living organisms may be modified. It is based on a simplified version of the bacterial CRISPR-Cas9 antiviral defense system. By delivering the Cas9 nuclease complexed with a synthetic guide RNA into a cell, the cell's genome can be cut at a desired location, allowing existing genes to be removed and/or new ones added in vivo."
+    },
+    {
+      "id": "txt-auth-013",
+      "label": 0,
+      "domain": "economics",
+      "source": "Adam Smith, The Wealth of Nations (1776, Public Domain)",
+      "license": "Public Domain",
+      "text": "The greatest improvement in the productive powers of labour, and the greater part of the skill, dexterity, and judgment with which it is anywhere directed, or applied, seem to have been the effects of the division of labour. The effects of the division of labour, in the general business of society, will be more easily understood by considering in what manner it operates in some particular manufactures."
+    },
+    {
+      "id": "txt-auth-014",
+      "label": 0,
+      "domain": "networking",
+      "source": "IETF RFC 793: Transmission Control Protocol (Public Domain)",
+      "license": "Public Domain",
+      "text": "The Transmission Control Protocol is intended for use as a highly reliable host-to-host protocol between hosts in packet-switched computer communication networks, and in interconnected systems of such networks. TCP is a connection-oriented, end-to-end reliable packet service in an internetwork environment. TCP assumes it can obtain a simple, potentially unreliable datagram service from lower-level protocols, and it provides a reliable process-to-process communication service over virtual circuits."
+    },
+    {
+      "id": "txt-auth-015",
+      "label": 0,
+      "domain": "history_byzantine",
+      "source": "Wikipedia: Byzantine Empire (CC BY-SA 4.0)",
+      "license": "CC BY-SA 4.0",
+      "text": "The Byzantine Empire, also referred to as the Eastern Roman Empire, was the continuation of the Roman Empire centered in its capital of Constantinople during Late Antiquity and the Middle Ages. The empire survived the fragmentation and fall of the Western Roman Empire in the 5th century AD and continued to exist for an additional thousand years until the fall of Constantinople to the Ottoman Empire in 1453."
+    },
+    {
+      "id": "txt-auth-016",
+      "label": 0,
+      "domain": "neuroscience",
+      "source": "Wikipedia: Action Potential (CC BY-SA 4.0)",
+      "license": "CC BY-SA 4.0",
+      "text": "In physiology, an action potential occurs when the membrane potential of a specific cell location rapidly rises and falls. This depolarization then causes adjacent locations to similarly depolarize. Action potentials occur in several types of animal cells, called excitable cells, which include neurons, muscle cells, and endocrine cells. In neurons, action potentials play a central role in cell-to-cell communication by providing for the propagation of signals along the neuron's axon toward synaptic boutons."
+    },
+    {
+      "id": "txt-auth-017",
+      "label": 0,
+      "domain": "oceanography",
+      "source": "NOAA / Wikipedia: Thermohaline Circulation (Public Domain)",
+      "license": "Public Domain",
+      "text": "Thermohaline circulation is a part of the large-scale ocean circulation that is driven by global density gradients created by surface heat and freshwater fluxes. The adjective thermohaline derives from thermo- referring to temperature and -haline referring to salt content, factors which together determine the density of sea water. Wind-driven surface currents travel poleward from the equatorial Atlantic Ocean, cooling en route, and eventually sinking at high latitudes."
+    },
+    {
+      "id": "txt-auth-018",
+      "label": 0,
+      "domain": "philosophy",
+      "source": "John Locke, An Essay Concerning Human Understanding (1689, Public Domain)",
+      "license": "Public Domain",
+      "text": "Let us then suppose the mind to be, as we say, white paper, void of all characters, without any ideas: How comes it to be furnished? Whence comes it by that vast store which the busy and boundless fancy of man has painted on it with an almost endless variety? Whence has it all the materials of reason and knowledge? To this I answer, in one word, from experience. In that all our knowledge is founded, and from that it ultimately derives itself."
+    },
+    {
+      "id": "txt-auth-019",
+      "label": 0,
+      "domain": "linguistics",
+      "source": "Wikipedia: Universal Grammar (CC BY-SA 4.0)",
+      "license": "CC BY-SA 4.0",
+      "text": "Universal grammar in modern linguistics is the theory of the genetic component of the language faculty, usually credited to Noam Chomsky. The basic postulate of UG is that a certain set of structural rules are innate to humans, independent of sensory experience. With more linguistic stimuli received in the course of psychological development, children then adopt specific syntactic rules that conform to UG."
+    },
+    {
+      "id": "txt-auth-020",
+      "label": 0,
+      "domain": "climatology",
+      "source": "IPCC / Wikipedia: Greenhouse Effect (CC BY-SA 4.0)",
+      "license": "CC BY-SA 4.0",
+      "text": "The greenhouse effect is the process by which radiation from a planet's atmosphere warms the planet's surface to a temperature above what it would be without this atmosphere. Radiatively active gases in a planet's atmosphere radiate energy in all directions. Part of this radiation is directed towards the surface, thus warming it. Earth's natural greenhouse effect is critical to supporting life, and human activities have intensified this effect by releasing greenhouse gases."
+    },
+    {
+      "id": "txt-synth-001",
+      "label": 1,
+      "domain": "quantum_computing",
+      "source": "OpenAI GPT-4",
+      "license": "MIT",
+      "generator_model": "gpt-4",
+      "text": "Quantum computing represents a fundamental paradigm shift in computational architecture, moving beyond classical binary logic to leverage quantum mechanical phenomena. Unlike classical bits that exist strictly in discrete states of zero or one, quantum bits, or qubits, exploit the principle of superposition to inhabit continuous linear combinations of computational basis states. Furthermore, the phenomenon of quantum entanglement establishes non-local correlations across multiple qubits, exponentially expanding the dimension of the state space. As a consequence, specialized quantum algorithms can achieve polynomial or super-polynomial speedups over the most efficient known classical approaches for targeted mathematical challenges, such as integer factorization and molecular quantum simulation."
+    },
+    {
+      "id": "txt-synth-002",
+      "label": 1,
+      "domain": "renewable_energy",
+      "source": "OpenAI GPT-3.5",
+      "license": "MIT",
+      "generator_model": "gpt-3.5-turbo",
+      "text": "The global transition toward renewable energy infrastructure is gaining substantial momentum as governments and private enterprises confront the environmental realities of carbon emissions. Solar photovoltaic technology and offshore wind generation have experienced exponential declines in capital expenditure over the past decade, rendering clean power generation cost-competitive with conventional fossil fuels in diverse metropolitan grids. Moreover, breakthroughs in grid-scale lithium-iron-phosphate and flow battery storage systems have begun addressing the intermittent generation profiles historically associated with meteorological variations, establishing an integrated pathway toward decentralized carbon neutrality."
+    },
+    {
+      "id": "txt-synth-003",
+      "label": 1,
+      "domain": "machine_learning",
+      "source": "Anthropic Claude 3",
+      "license": "MIT",
+      "generator_model": "claude-3-sonnet",
+      "text": "Transformer architectures have revolutionized artificial intelligence by replacing recurrent and convolutional topologies with multi-head self-attention mechanisms. By enabling models to compute pairwise contextual representations across arbitrary token positions simultaneously, transformers bypass the sequential processing bottleneck of traditional architectures. This structural efficiency facilitates scalable training over unprecedented corpus sizes, yielding emergent capabilities in few-shot reasoning, semantic abstraction, and cross-lingual translation. However, quadratic computational complexity with respect to context window length remains a central optimization constraint, driving extensive research into linear attention and state-space models."
+    },
+    {
+      "id": "txt-synth-004",
+      "label": 1,
+      "domain": "space_exploration",
+      "source": "Meta LLaMA-2",
+      "license": "MIT",
+      "generator_model": "llama-2-70b",
+      "text": "Deep space human exploration presents unprecedented logistical and biological hurdles that necessitate comprehensive interdisciplinary solutions. Prolonged exposure to microgravity induces progressive bone demineralization, cardiovascular deconditioning, and ophthalmic neuro-ocular syndromes. Additionally, interplanetary spacecraft operating outside the protective magnetosphere of Earth encounter galactic cosmic radiation and sporadic solar particle events capable of inducing acute cellular toxicity. Consequently, long-duration missions targeting the Martian surface demand advanced closed-loop life support engineering, active electromagnetic shielding, and autonomous medical diagnostic telemetry."
+    },
+    {
+      "id": "txt-synth-005",
+      "label": 1,
+      "domain": "cognitive_science",
+      "source": "OpenAI GPT-4",
+      "license": "MIT",
+      "generator_model": "gpt-4",
+      "text": "Cognitive architectures in biological organisms exhibit dynamic modularity, where specialized cortical networks orchestrate sensory perception, motor control, and metacognitive deliberation. Working memory functions as an active scratchpad, constrained by attentional capacity yet sustained through recurrent thalamocortical oscillations. When incoming stimuli deviate from internal predictive models, the resulting prediction error signals trigger synaptic plasticity via dopaminergic modulation. This hierarchical Bayesian framework illustrates how biological intelligence continuously balances perceptual inference with energetic efficiency, serving as a foundational blueprint for synthetic neuro-symbolic algorithms."
+    },
+    {
+      "id": "txt-synth-006",
+      "label": 1,
+      "domain": "synthetic_biology",
+      "source": "Anthropic Claude 3",
+      "license": "MIT",
+      "generator_model": "claude-3-opus",
+      "text": "Synthetic biology bridges molecular genetics with engineering disciplines, treating living cells as programmable chassis for chemical synthesis and computational logic. By assembling standardized genetic parts into synthetic gene circuits, bioengineers can program cellular responses to environmental triggers with Boolean precision. Recent advances in cell-free protein expression systems and automated directed evolution have accelerated the design-build-test-learn cycle. These technologies enable sustainable biosynthesis of therapeutic compounds, biodegradable polymers, and nitrogen-fixing agricultural additives while reducing reliance on petroleum-derived precursors."
+    },
+    {
+      "id": "txt-synth-007",
+      "label": 1,
+      "domain": "cybersecurity",
+      "source": "OpenAI GPT-3.5",
+      "license": "MIT",
+      "generator_model": "gpt-3.5-turbo",
+      "text": "Zero trust security architectures represent a paradigm shift from traditional perimeter-based defense models toward continuous, context-aware identity verification. In modern decentralized cloud environments, implicit trust based on network location is obsolete. Under the zero trust framework, every access request must be explicitly authenticated, authorized, and cryptographically encrypted before access to organizational resources is granted. Incorporating automated micro-segmentation and real-time behavioral telemetry minimizes the potential blast radius of advanced persistent threats."
+    },
+    {
+      "id": "txt-synth-008",
+      "label": 1,
+      "domain": "economic_policy",
+      "source": "OpenAI GPT-4",
+      "license": "MIT",
+      "generator_model": "gpt-4",
+      "text": "Macroeconomic stability in post-industrial nations hinges on the calibrated equilibrium between monetary tightening and counter-cyclical fiscal intervention. Central banks operating under inflation-targeting regimes utilize policy interest rate adjustments to moderate aggregate demand without stifling capital formation. Concurrently, government treasury departments must balance sovereign debt servicing requirements against the imperative for public investment in human capital and critical transportation infrastructure. Misalignment between these mechanisms risks precipitating prolonged stagflationary pressures."
+    },
+    {
+      "id": "txt-synth-009",
+      "label": 1,
+      "domain": "astronomy",
+      "source": "Meta LLaMA-2",
+      "license": "MIT",
+      "generator_model": "llama-2-13b",
+      "text": "Exoplanetary atmospheric characterization has entered an extraordinary empirical era driven by high-precision spaceborne transmission spectroscopy. When an extrasolar planet transits its host star, a minute fraction of starlight filters through the planetary atmosphere, absorbing characteristic wavelengths corresponding to molecular vibrational transitions. Researchers can therefore detect diagnostic spectroscopic signatures of water vapor, methane, carbon monoxide, and clouds of silicate particles. These observations provide vital boundary conditions for models of planetary migration and orbital evolution."
+    },
+    {
+      "id": "txt-synth-010",
+      "label": 1,
+      "domain": "environmental_science",
+      "source": "OpenAI GPT-4",
+      "license": "MIT",
+      "generator_model": "gpt-4",
+      "text": "Anthropogenic ocean acidification resulting from elevated atmospheric carbon dioxide dissolution threatens marine calcifying organisms and global trophic food webs. As seawater absorbs carbon dioxide, carbonic acid forms and subsequently dissociates, driving down ambient pH and depleting the availability of carbonate ions necessary for biogenic aragonite precipitation. Corals, pteropods, and larval mollusks exhibit diminished calcification rates, structural shell thinning, and increased metabolic expenditure. The cascading ecological ramifications jeopardize coastal protection and regional commercial fisheries."
+    },
+    {
+      "id": "txt-synth-011",
+      "label": 1,
+      "domain": "distributed_systems",
+      "source": "Anthropic Claude 3",
+      "license": "MIT",
+      "generator_model": "claude-3-sonnet",
+      "text": "Replication state machines form the bedrock of consensus in fault-tolerant distributed databases, guaranteeing identical state progression across asynchronous nodes. Protocols such as Raft and Multi-Paxos ensure safety by electing a single deterministic leader responsible for ordering log entries before broadcasting them to quorum followers. To accommodate Byzantine network failures where adversarial or corrupted nodes broadcast contradictory state messages, asynchronous threshold cryptography and practical Byzantine fault tolerance mechanisms are integrated into modern distributed ledgers."
+    },
+    {
+      "id": "txt-synth-012",
+      "label": 1,
+      "domain": "nanotechnology",
+      "source": "OpenAI GPT-3.5",
+      "license": "MIT",
+      "generator_model": "gpt-3.5-turbo",
+      "text": "Nanomaterial engineering harnesses unique quantum confinement effects that manifest when physical dimensions are reduced below one hundred nanometers. At this dimensional scale, the surface area to volume ratio increases dramatically, radically altering optical, electrical, and catalytic behaviors compared to bulk material counterparts. Carbon nanotubes and two-dimensional graphene sheets exhibit exceptional tensile strength and ballistic thermal conductance, facilitating the development of ultra-lightweight composite materials and high-frequency flexible electronic devices."
+    },
+    {
+      "id": "txt-synth-013",
+      "label": 1,
+      "domain": "epistemology",
+      "source": "OpenAI GPT-4",
+      "license": "MIT",
+      "generator_model": "gpt-4",
+      "text": "Epistemological inquiry into the nature of synthetic cognition challenges traditional demarcations between syntactic symbol manipulation and genuine semantic intentionality. When large language models generate contextually coherent philosophical arguments, the debate resurfaces regarding whether stochastic parrot dynamics can yield conceptual comprehension. Functionalist perspectives suggest that if an artificial neural network demonstrates reliable behavioral competence across diverse reasoning benchmarks, attributing internal mental representations becomes a justifiable theoretical stance."
+    },
+    {
+      "id": "txt-synth-014",
+      "label": 1,
+      "domain": "materials_science",
+      "source": "Meta LLaMA-2",
+      "license": "MIT",
+      "generator_model": "llama-2-70b",
+      "text": "High-temperature superconductivity in cuprate and nickelate perovskites continues to stimulate intensive theoretical and experimental investigation in condensed matter physics. Unlike conventional Bardeen-Cooper-Schrieffer superconductors where electron pairing is mediated by acoustic phonon vibrations, unconventionally paired materials exhibit strong electronic correlation effects and anisotropic d-wave symmetry. Elucidating the precise microscopic mechanism driving electron pair condensation in these systems could catalyze the realization of ambient-pressure room-temperature superconducting power transmission lines."
+    },
+    {
+      "id": "txt-synth-015",
+      "label": 1,
+      "domain": "urban_planning",
+      "source": "Anthropic Claude 3",
+      "license": "MIT",
+      "generator_model": "claude-3-sonnet",
+      "text": "Sustainable urban planning frameworks are progressively embracing the polycentric fifteen-minute city paradigm to mitigate automobile congestion and carbon footprints. By decentralizing essential commercial, medical, and educational services into neighborhood micro-hubs, municipalities promote active pedestrian transit and micromobility options. Furthermore, retrofitting urban green corridors and permeable pavements enhances stormwater retention and alleviates urban heat island phenomena, fostering climatic resilience and public health in densely populated metropolitan regions."
+    },
+    {
+      "id": "txt-synth-016",
+      "label": 1,
+      "domain": "computational_genomics",
+      "source": "OpenAI GPT-4",
+      "license": "MIT",
+      "generator_model": "gpt-4",
+      "text": "Deep learning architectures have catalyzed transformative advances in computational genomics, particularly in resolving three-dimensional macromolecular conformations directly from primary amino acid sequences. Spatial transformers and equivariant graph neural networks model physical geometry while honoring translational and rotational symmetries in Euclidean space. Concurrently, foundation models trained on trillions of genomic nucleotide pairs uncover subtle non-coding variant consequences and chromatin accessibility landscapes, paving the path toward individualized precision pharmacogenomics."
+    },
+    {
+      "id": "txt-synth-017",
+      "label": 1,
+      "domain": "cryptography",
+      "source": "OpenAI GPT-3.5",
+      "license": "MIT",
+      "generator_model": "gpt-3.5-turbo",
+      "text": "Post-quantum cryptography encompasses algorithmic families engineered to withstand cryptanalytic attacks executed on large-scale fault-tolerant quantum computers. Because Shor's algorithm solves discrete logarithms and prime factorization in polynomial time, standard public-key cryptosystems like RSA and elliptic-curve cryptography face obsolescence. National standardization initiatives have therefore converged on lattice-based cryptography, hash-based signatures, and code-based encryption algorithms possessing proven asymptotic hardness against both classical and quantum adversaries."
+    },
+    {
+      "id": "txt-synth-018",
+      "label": 1,
+      "domain": "robotics",
+      "source": "Meta LLaMA-2",
+      "license": "MIT",
+      "generator_model": "llama-2-13b",
+      "text": "Autonomous robotic manipulation in unstructured real-world environments requires the seamless integration of multi-modal sensory perception, kinematic path planning, and compliant impedance control. Tactile sensor arrays embedded within end-effector fingertips deliver high-resolution force feedback, allowing robotic grippers to manipulate fragile objects without inducing mechanical fracture or slippage. Simultaneously, reinforcement learning policies trained in photorealistic physics simulators facilitate zero-shot sim-to-real transfer for dynamic object grasping."
+    },
+    {
+      "id": "txt-synth-019",
+      "label": 1,
+      "domain": "telecommunications",
+      "source": "Anthropic Claude 3",
+      "license": "MIT",
+      "generator_model": "claude-3-opus",
+      "text": "Sixth-generation wireless communications systems aspire to integrate terrestrial cellular networks with low-Earth-orbit satellite constellations into a unified three-dimensional telecommunications fabric. Operating within sub-terahertz and optical frequency bands, these networks promise microsecond latencies and multi-gigabit throughputs capable of sustaining holographic telepresence and autonomous vehicular swarm coordination. Reconfigurable intelligent surfaces utilizing metamaterials dynamically steer radio frequency wavefronts around physical obstructions, ensuring uninterrupted coverage."
+    },
+    {
+      "id": "txt-synth-020",
+      "label": 1,
+      "domain": "agricultural_technology",
+      "source": "OpenAI GPT-4",
+      "license": "MIT",
+      "generator_model": "gpt-4",
+      "text": "Precision agriculture leverages internet-of-things soil telemetry, drone-based hyperspectral imaging, and variable-rate algorithmic dispensing to optimize crop yields while minimizing ecological degradation. Multispectral sensors monitor vegetative chlorophyll absorption and canopy water stress in real time, enabling micro-targeted nitrogen fertilization and precision drip irrigation. Automated robotic harvesters equipped with computer vision algorithms selectively harvest ripe produce, dramatically reducing post-harvest food waste and agricultural runoff into surrounding freshwater ecosystems."
+    }
+  ]
+}
